@@ -14,7 +14,7 @@ classdef moku
             obj.IP = IpAddr;
             obj.Instrument = Instrument;
             
-            mokuctl(obj.IP, 'deploy', obj.Instrument);
+            mokuctl(obj, 'deploy', obj.Instrument);
         end
         
         function status = mokuctl(obj, action, varargin)
