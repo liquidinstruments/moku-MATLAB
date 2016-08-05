@@ -17,6 +17,10 @@ classdef moku
             mokuctl(obj, 'deploy', obj.Instrument);
         end
         
+        function delete(obj)
+            mokuctl(obj, 'close');
+        end
+        
         function status = mokuctl(obj, action, varargin)
             persistent nid;
 
