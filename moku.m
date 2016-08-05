@@ -15,6 +15,10 @@ classdef moku
             obj.Instrument = Instrument;
             
             mokuctl(obj, 'deploy', obj.Instrument);
+            
+            % There's occasionally some rubbish in the very first frame,
+            % thow it away.
+            mokuctl(obj, 'get_frame');
         end
         
         function delete(obj)
