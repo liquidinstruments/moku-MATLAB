@@ -34,7 +34,7 @@ classdef moku
             nid = nid + 1;
             opts = weboptions('MediaType','application/json', 'Timeout', 10);
             jsonresp = webwrite(['http://' obj.IP '/rpc/call'], jsonstruct, opts);
-            resp = loadjson(jsonresp);
+            resp = loadjson(jsonresp, 'SimplifyCell', 1);
 
             if isfield(resp, 'error')
                 error(['Moku:RPC' int2str(abs(resp.error.code))],...
@@ -79,10 +79,7 @@ classdef moku
         end
 
         function Frame = get.Frame(obj)
-            d = mokuctl(obj, 'get_frame');
-            Frame = struct;
-            Frame.ch1 = cell2mat(d.ch1);
-            Frame.ch2 = cell2mat(d.ch2);
+            Frame = mokuctl(obj, 'get_frame');
         end
     end
 end
