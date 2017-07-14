@@ -1,18 +1,28 @@
-m = moku('192.168.69.241', 'oscilloscope');
+% Connect to your Moku and deploy the desired instrument
+m = moku('192.168.69.224', 'oscilloscope');
 
-mokuctl(m, 'set_timebase', -0.25, 0.25);
+% Configure the instrument
+mokuctl(m, 'set_timebase', -0.001,0.001);
 mokuctl(m, 'set_precision_mode', 'true');
-mokuctl(m, 'set_frontend', 1, 'false', 'false', 'true');
-mokuctl(m, 'set_frontend', 2, 'false', 'false', 'true');
+mokuctl(m, 'set_frontend', 1, 'true', 'false', 'false');
+mokuctl(m, 'set_frontend', 2, 'true', 'false', 'false');
+mokuctl(m, 'gen_sinewave', 1, 0.01, 1000);
+mokuctl(m, 'gen_sinewave', 2, 0.25, 2500);
 
-mokuctl(m, 'commit');
+% Prepare the plotting window and line-plot handlers
+figure;
+hold on;
+f = m.Frame
+linehandlers = plot(f.time,f.ch1,f.time,f.ch2)
 
-try
-    d = m.Frame;
-    min(d.ch1)
-    max(d.ch1)
-catch
-    disp('No data')
+% Plotting loop
+% Retrieves new voltage data and updates the plot for
+% both channels.
+while(1)
+    f = m.Frame;
+    set(linehandlers(1),'xdata',f.time,'ydata',f.ch1);
+    set(linehandlers(2),'xdata',f.time,'ydata',f.ch2);
+    pause(0.01); % 10msec pause between plot updates
 end
-
-mokuctl(m, 'close');
+    
+    

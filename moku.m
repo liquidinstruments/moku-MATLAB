@@ -18,7 +18,7 @@ classdef moku
             
             % There's occasionally some rubbish in the very first frame,
             % thow it away.
-            mokuctl(obj, 'get_frame');
+            mokuctl(obj, 'get_realtime_data');
         end
         
         function delete(obj)
@@ -83,7 +83,7 @@ classdef moku
         end
 
         function Frame = get.Frame(obj)
-            Frame = mokuctl(obj, 'get_frame');
+            Frame = mokuctl(obj, 'get_realtime_data');
         end
     end
 end
