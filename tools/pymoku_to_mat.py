@@ -14,6 +14,7 @@ jinja_env = Environment(
 template = 'mat_obj.templ'
 
 _paragraph_re = re.compile(r'(?:\r\n|\r|\n)+')
+_return_re = re.compile(r'return\s(\S+)')
 
 def firstline(line):
     return _paragraph_re.split(line)[0]
@@ -57,12 +58,14 @@ def process_object(to_doc):
         ArgPair = namedtuple('ArgPair', ['name', 'default'])
         arg_pairs = list(map(ArgPair._make, zip(args, defs)))
 
+        returns = any(x != 'None' for x in _return_re.findall(getsource(f[1])))
+
         fspecs.append({
             'name' : name,
             'args' : arg_pairs,
             'rargs' : list(reversed(arg_pairs)), # works around a bug with reversing length-1 generators
             'docstring' : doc,
-            'return' : '',
+            'return' : 'ret' if returns else '', # TODO: Maybe try and discover a sensible return variable?
         })
 
     env = {
