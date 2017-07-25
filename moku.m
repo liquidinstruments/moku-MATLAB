@@ -19,6 +19,8 @@ classdef moku
         end
 
         function status = mokuctl(obj, action, varargin)
+            % Low-level instruction to control Moku:Lab. Should not be
+            % called directly, use instrument-specific functions instead
             persistent nid;
 
             if isempty(nid)
@@ -39,7 +41,7 @@ classdef moku
                 % Assume if the first entry is a cell then the parameters
                 % were keyword arguments
                 elseif iscell(x{1})
-                    x = x{1}
+                    x = x{1};
                     % Cells can be {name,val;...} or {name,val,...}
                     if (size(x,1) == 1) && size(x,2) > 2
                         % Reshape {name,val, name,val, ... } list to {name,val; ... }
@@ -62,7 +64,7 @@ classdef moku
                     args = struct(x{:});
                 else
                     % Positional arguments, so we keep it as a cell array
-                    args = x
+                    args = x;
                 end
             end
 
@@ -75,7 +77,7 @@ classdef moku
             nid = nid + 1;
             opts = weboptions('MediaType','application/json', 'Timeout', 10);
             jsonresp = webwrite(['http://' obj.IP '/rpc/call'], jsonstruct, opts);
-            resp = loadjson(jsonresp, 'SimplifyCell', 1);
+            resp = jsondecode(jsonresp);
 
             if isfield(resp, 'error')
                 error(['Moku:RPC' int2str(abs(resp.error.code))],...
