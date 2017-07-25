@@ -66,7 +66,7 @@ classdef MokuDatalogger < moku
             % 
             % :raises ValueError: invalid channel number
             % :raises ValueOutOfRangeException: if the channel number is invalid
-            if isempty(ch)
+            if nargin < 1 || isempty(ch)
                 ch = 'nil';
             end
 
@@ -99,14 +99,20 @@ classdef MokuDatalogger < moku
             % 
             % :raises ValueError: invalid channel number
             % :raises ValueOutOfRangeException: invalid waveform parameters
-            if isempty(frequency)
-                frequency = 0;
+            if nargin < 5 || isempty(symmetry)
+                symmetry = 0.0;
             end
-            if isempty(offset)
+            if nargin < 4 || isempty(offset)
                 offset = 0.5;
             end
-            if isempty(symmetry)
-                symmetry = 0.0;
+            if nargin < 3 || isempty(frequency)
+                frequency = 0;
+            end
+            if nargin < 2 || isempty(amplitude)
+                amplitude = 'nil';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'gen_rampwave', ch, amplitude, frequency, offset, symmetry);
@@ -132,11 +138,17 @@ classdef MokuDatalogger < moku
             % 
             % :raises ValueError: if the channel number is invalid
             % :raises ValueOutOfRangeException: if wave parameters are out of range
-            if isempty(frequency)
+            if nargin < 4 || isempty(offset)
+                offset = 0.0;
+            end
+            if nargin < 3 || isempty(frequency)
                 frequency = 0;
             end
-            if isempty(offset)
-                offset = 0.0;
+            if nargin < 2 || isempty(amplitude)
+                amplitude = 'nil';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'gen_sinewave', ch, amplitude, frequency, offset);
@@ -171,20 +183,26 @@ classdef MokuDatalogger < moku
             % 
             % :raises ValueError: invalid channel number
             % :raises ValueOutOfRangeException: input parameters out of range or incompatible with one another
-            if isempty(frequency)
-                frequency = 0;
+            if nargin < 7 || isempty(falltime)
+                falltime = 0.0;
             end
-            if isempty(offset)
-                offset = 0.5;
-            end
-            if isempty(duty)
-                duty = 0;
-            end
-            if isempty(risetime)
+            if nargin < 6 || isempty(risetime)
                 risetime = 0;
             end
-            if isempty(falltime)
-                falltime = 0.0;
+            if nargin < 5 || isempty(duty)
+                duty = 0;
+            end
+            if nargin < 4 || isempty(offset)
+                offset = 0.5;
+            end
+            if nargin < 3 || isempty(frequency)
+                frequency = 0;
+            end
+            if nargin < 2 || isempty(amplitude)
+                amplitude = 'nil';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'gen_squarewave', ch, amplitude, frequency, offset, duty, risetime, falltime);
@@ -231,11 +249,11 @@ classdef MokuDatalogger < moku
             % :raises FrameTimeout: if the timeout expired
             % :raises InvalidOperationException: if there is no streaming session running
             % :raises ValueOutOfRangeException: invalid input parameters
-            if isempty(n)
-                n = 0;
-            end
-            if isempty(timeout)
+            if nargin < 2 || isempty(timeout)
                 timeout = 'nil';
+            end
+            if nargin < 1 || isempty(n)
+                n = 0;
             end
 
             mokuctl(obj, 'get_stream_data', n, timeout);
@@ -285,14 +303,14 @@ classdef MokuDatalogger < moku
             % 
             % :type ac: bool
             % :param ac: AC-couple; default DC.
-            if isempty(channel)
-                channel = 'true';
+            if nargin < 3 || isempty(atten)
+                atten = 'false';
             end
-            if isempty(fiftyr)
+            if nargin < 2 || isempty(fiftyr)
                 fiftyr = 'false';
             end
-            if isempty(atten)
-                atten = 'false';
+            if nargin < 1 || isempty(channel)
+                channel = 'true';
             end
 
             mokuctl(obj, 'set_frontend', channel, fiftyr, atten);
@@ -344,8 +362,11 @@ classdef MokuDatalogger < moku
             % 
             % :raises ValueOutOfRangeException: if the channel number is incorrect
             % :raises ValueError: if any of the string parameters are incorrect
-            if isempty(source)
+            if nargin < 2 || isempty(source)
                 source = 'round';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'set_source', ch, source);
@@ -376,20 +397,20 @@ classdef MokuDatalogger < moku
             % 
             % :raises ValueError: if invalid channel enable parameter
             % :raises ValueOutOfRangeException: if duration is invalid
-            if isempty(duration)
-                duration = 10;
+            if nargin < 5 || isempty(filetype)
+                filetype = 'csv';
             end
-            if isempty(ch1)
-                ch1 = 'true';
-            end
-            if isempty(ch2)
-                ch2 = 'true';
-            end
-            if isempty(use_sd)
+            if nargin < 4 || isempty(use_sd)
                 use_sd = 'true';
             end
-            if isempty(filetype)
-                filetype = 'csv';
+            if nargin < 3 || isempty(ch2)
+                ch2 = 'true';
+            end
+            if nargin < 2 || isempty(ch1)
+                ch1 = 'true';
+            end
+            if nargin < 1 || isempty(duration)
+                duration = 10;
             end
 
             mokuctl(obj, 'start_data_log', duration, ch1, ch2, use_sd, filetype);
@@ -413,14 +434,14 @@ classdef MokuDatalogger < moku
             % 
             % :raises ValueError: if invalid channel enable parameter
             % :raises ValueOutOfRangeException: if duration is invalid
-            if isempty(duration)
-                duration = 10;
+            if nargin < 3 || isempty(ch2)
+                ch2 = 'true';
             end
-            if isempty(ch1)
+            if nargin < 2 || isempty(ch1)
                 ch1 = 'true';
             end
-            if isempty(ch2)
-                ch2 = 'true';
+            if nargin < 1 || isempty(duration)
+                duration = 10;
             end
 
             mokuctl(obj, 'start_stream_data', duration, ch1, ch2);

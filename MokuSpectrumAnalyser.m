@@ -41,7 +41,7 @@ classdef MokuSpectrumAnalyser < moku
             % 
             % :type ch: int; {1,2}
             % :param ch: Channel number to turn off (None, or leave blank, for both)firmware_is_compatible
-            if isempty(ch)
+            if nargin < 1 || isempty(ch)
                 ch = 'nil';
             end
 
@@ -65,8 +65,14 @@ classdef MokuSpectrumAnalyser < moku
             % 
             % :raises ValueError: if the channel number is invalid
             % :raises ValueOutOfRangeException: if wave parameters are out of range
-            if isempty(freq)
+            if nargin < 3 || isempty(freq)
                 freq = 'false';
+            end
+            if nargin < 2 || isempty(amp)
+                amp = 'nil';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'gen_sinewave', ch, amp, freq);
@@ -77,11 +83,11 @@ classdef MokuSpectrumAnalyser < moku
             % 
             % On SpectrumAnalyser this is an alias for :any:`get_realtime_data <pymoku.instruments.SpectrumAnalyser.get_realtime_data>` as the
             % output data is never downsampled from the sweep results.
-            if isempty(timeout)
-                timeout = 'nil';
-            end
-            if isempty(wait)
+            if nargin < 2 || isempty(wait)
                 wait = 'true';
+            end
+            if nargin < 1 || isempty(timeout)
+                timeout = 'nil';
             end
 
             mokuctl(obj, 'get_data', timeout, wait);
@@ -139,11 +145,11 @@ classdef MokuSpectrumAnalyser < moku
             %         recently-applied settings, otherwise just return the most recently captured valid data.
             % 
             % :return: :any:`InstrumentData` subclass, specific to the instrument.
-            if isempty(timeout)
-                timeout = 'nil';
-            end
-            if isempty(wait)
+            if nargin < 2 || isempty(wait)
                 wait = 'true';
+            end
+            if nargin < 1 || isempty(timeout)
+                timeout = 'nil';
             end
 
             mokuctl(obj, 'get_realtime_data', timeout, wait);
@@ -155,7 +161,7 @@ classdef MokuSpectrumAnalyser < moku
             % 
             % :type dbm: bool
             % :param dbm: Enable dBm scale
-            if isempty(dbm)
+            if nargin < 1 || isempty(dbm)
                 dbm = 'true';
             end
 
@@ -182,14 +188,14 @@ classdef MokuSpectrumAnalyser < moku
             % 
             % :type ac: bool
             % :param ac: AC-couple; default DC.
-            if isempty(channel)
-                channel = 'true';
+            if nargin < 3 || isempty(atten)
+                atten = 'false';
             end
-            if isempty(fiftyr)
+            if nargin < 2 || isempty(fiftyr)
                 fiftyr = 'false';
             end
-            if isempty(atten)
-                atten = 'false';
+            if nargin < 1 || isempty(channel)
+                channel = 'true';
             end
 
             mokuctl(obj, 'set_frontend', channel, fiftyr, atten);
@@ -205,7 +211,7 @@ classdef MokuSpectrumAnalyser < moku
             % :param rbw: Desired resolution bandwidth (Hz), or ``None`` for auto-mode
             % 
             % :raises ValueError: if the RBW is not positive-definite or *None*
-            if isempty(rbw)
+            if nargin < 1 || isempty(rbw)
                 rbw = 'nil';
             end
 
@@ -226,6 +232,9 @@ classdef MokuSpectrumAnalyser < moku
             % :param f2: Right-most frequency (Hz)
             % 
             % :raises InvalidConfigurationException: if the span is not positive-definite.
+            if nargin < 1 || isempty(f1)
+                f1 = 'nil';
+            end
 
             mokuctl(obj, 'set_span', f1);
         end

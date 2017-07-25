@@ -69,11 +69,11 @@ classdef MokuLockInAmp < moku
             %         recently-applied settings, otherwise just return the most recently captured valid data.
             % 
             % :return: :any:`InstrumentData` subclass, specific to the instrument.
-            if isempty(timeout)
-                timeout = 'nil';
-            end
-            if isempty(wait)
+            if nargin < 2 || isempty(wait)
                 wait = 'true';
+            end
+            if nargin < 1 || isempty(timeout)
+                timeout = 'nil';
             end
 
             mokuctl(obj, 'get_data', timeout, wait);
@@ -125,11 +125,11 @@ classdef MokuLockInAmp < moku
             %         recently-applied settings, otherwise just return the most recently captured valid data.
             % 
             % :return: :any:`InstrumentData` subclass, specific to the instrument.
-            if isempty(timeout)
-                timeout = 'nil';
-            end
-            if isempty(wait)
+            if nargin < 2 || isempty(wait)
                 wait = 'true';
+            end
+            if nargin < 1 || isempty(timeout)
+                timeout = 'nil';
             end
 
             mokuctl(obj, 'get_realtime_data', timeout, wait);
@@ -162,11 +162,17 @@ classdef MokuLockInAmp < moku
             % 
             % :type mode: string {'range', 'precision'}
             % :param mode: Selects signal mode, either optimising for high dynamic range or high precision.
-            if isempty(order)
+            if nargin < 4 || isempty(integrator)
+                integrator = 'range';
+            end
+            if nargin < 3 || isempty(order)
                 order = 'false';
             end
-            if isempty(integrator)
-                integrator = 'range';
+            if nargin < 2 || isempty(f_corner)
+                f_corner = 'nil';
+            end
+            if nargin < 1 || isempty(gain)
+                gain = 'nil';
             end
 
             mokuctl(obj, 'set_filter_parameters', gain, f_corner, order, integrator);
@@ -186,14 +192,14 @@ classdef MokuLockInAmp < moku
             % 
             % :type ac: bool
             % :param ac: AC-couple; default DC.
-            if isempty(channel)
-                channel = 'true';
+            if nargin < 3 || isempty(atten)
+                atten = 'false';
             end
-            if isempty(fiftyr)
+            if nargin < 2 || isempty(fiftyr)
                 fiftyr = 'false';
             end
-            if isempty(atten)
-                atten = 'false';
+            if nargin < 1 || isempty(channel)
+                channel = 'true';
             end
 
             mokuctl(obj, 'set_frontend', channel, fiftyr, atten);
@@ -209,6 +215,9 @@ classdef MokuLockInAmp < moku
             % 
             % :type offset: float
             % :param offset: (V)
+            if nargin < 1 || isempty(amplitude)
+                amplitude = 'nil';
+            end
 
             mokuctl(obj, 'set_lo_output', amplitude);
         end
@@ -224,8 +233,11 @@ classdef MokuLockInAmp < moku
             % 
             % :type use_q: bool
             % :param use_q: Use the quadrature output from the mixer (default in-phase)
-            if isempty(phase)
+            if nargin < 2 || isempty(phase)
                 phase = 'false';
+            end
+            if nargin < 1 || isempty(frequency)
+                frequency = 'nil';
             end
 
             mokuctl(obj, 'set_lo_parameters', frequency, phase);
@@ -243,6 +255,9 @@ classdef MokuLockInAmp < moku
             %         - **out**: Lock-in output
             %         - **lo**: Local Oscillator output
             %         - **i**, **q**: Mixer I and Q channels respectively.
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
+            end
 
             mokuctl(obj, 'set_monitor', ch);
         end
@@ -289,7 +304,7 @@ classdef MokuLockInAmp < moku
             % :param trigger_offset: Number of samples before (-) or after (+) the trigger point to start capturing.
             % 
             % :raises ValueOutOfRangeException: if either parameter is out of range.
-            if isempty(samplerate)
+            if nargin < 1 || isempty(samplerate)
                 samplerate = 0;
             end
 
@@ -309,8 +324,11 @@ classdef MokuLockInAmp < moku
             % 
             % :type lmode: string, {'clip','round'}
             % :param lmode: DAC Loopback mode (ignored 'in' sources)
-            if isempty(source)
+            if nargin < 2 || isempty(source)
                 source = 'round';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'set_source', ch, source);
@@ -329,6 +347,9 @@ classdef MokuLockInAmp < moku
             % :param t2: As *t1* but to the right of screen.
             % 
             % :raises InvalidConfigurationException: if the timebase is backwards or zero.
+            if nargin < 1 || isempty(t1)
+                t1 = 'nil';
+            end
 
             mokuctl(obj, 'set_timebase', t1);
         end
@@ -369,14 +390,20 @@ classdef MokuLockInAmp < moku
             %         ``mode='normal'`` then retrieve a single frame using :any:`get_data <pymoku.instruments.Oscilloscope.get_data>`
             %         or :any:`get_realtime_data <pymoku.instruments.Oscilloscope.get_realtime_data>`
             %         with ``wait=True``.
-            if isempty(level)
-                level = 'false';
+            if nargin < 5 || isempty(hf_reject)
+                hf_reject = 'auto';
             end
-            if isempty(hysteresis)
+            if nargin < 4 || isempty(hysteresis)
                 hysteresis = 'false';
             end
-            if isempty(hf_reject)
-                hf_reject = 'auto';
+            if nargin < 3 || isempty(level)
+                level = 'false';
+            end
+            if nargin < 2 || isempty(edge)
+                edge = 'nil';
+            end
+            if nargin < 1 || isempty(source)
+                source = 'nil';
             end
 
             mokuctl(obj, 'set_trigger', source, edge, level, hysteresis, hf_reject);

@@ -43,16 +43,16 @@ def process_object(to_doc):
     for f in funcs:
         name = f[0]
         args = getargspec(f[1]).args[1:] # cut off self
-        defs = getargspec(f[1]).defaults or []
+        defs = list(getargspec(f[1]).defaults or [])
         doc = getdoc(f[1])
 
         if name.startswith('_'): continue
         if not doc: continue # If there's no docstring then it's not part of the public API
 
-        defs = list(map(translate_type, defs))
-
         no_defs = len(args) - len(defs) - 1 # because we nuked 'self' already
         defs = [None] * no_defs + defs
+
+        defs = list(map(translate_type, defs))
 
         ArgPair = namedtuple('ArgPair', ['name', 'default'])
         arg_pairs = list(map(ArgPair._make, zip(args, defs)))
@@ -60,6 +60,7 @@ def process_object(to_doc):
         fspecs.append({
             'name' : name,
             'args' : arg_pairs,
+            'rargs' : list(reversed(arg_pairs)), # works around a bug with reversing length-1 generators
             'docstring' : doc,
             'return' : '',
         })

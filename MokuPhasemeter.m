@@ -43,7 +43,7 @@ classdef MokuPhasemeter < moku
             % :param ch: Channel number, or ``None`` for both
             % 
             % :raises ValueError: If the channel number is invalid.
-            if isempty(ch)
+            if nargin < 1 || isempty(ch)
                 ch = 'nil';
             end
 
@@ -85,7 +85,7 @@ classdef MokuPhasemeter < moku
             % :param ch: Channel to turn off or *None* for all channels
             % 
             % :raises ValueOutOfRangeException: if the channel number is invalid
-            if isempty(ch)
+            if nargin < 1 || isempty(ch)
                 ch = 'nil';
             end
 
@@ -106,8 +106,14 @@ classdef MokuPhasemeter < moku
             % 
             % :raises ValueError: if the channel number is invalid
             % :raises ValueOutOfRangeException: if wave parameters are out of range
-            if isempty(frequency)
+            if nargin < 3 || isempty(frequency)
                 frequency = 0.0;
+            end
+            if nargin < 2 || isempty(amplitude)
+                amplitude = 'nil';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'gen_sinewave', ch, amplitude, frequency);
@@ -185,11 +191,11 @@ classdef MokuPhasemeter < moku
             % :raises FrameTimeout: if the timeout expired
             % :raises InvalidOperationException: if there is no streaming session running
             % :raises ValueOutOfRangeException: invalid input parameters
-            if isempty(n)
-                n = 0;
-            end
-            if isempty(timeout)
+            if nargin < 2 || isempty(timeout)
                 timeout = 'nil';
+            end
+            if nargin < 1 || isempty(n)
+                n = 0;
             end
 
             mokuctl(obj, 'get_stream_data', n, timeout);
@@ -230,7 +236,7 @@ classdef MokuPhasemeter < moku
             % :param ch: Channel number, or ``None`` for both
             % 
             % :raises ValueError: If the channel number is invalid.
-            if isempty(ch)
+            if nargin < 1 || isempty(ch)
                 ch = 'nil';
             end
 
@@ -248,6 +254,9 @@ classdef MokuPhasemeter < moku
             % 
             % :raises ValueError: If the channel number is invalid.
             % :raises ValueOutOfRangeException: if the bandwidth is not positive-definite or the channel number is invalid
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
+            end
 
             mokuctl(obj, 'set_bandwidth', ch);
         end
@@ -272,14 +281,14 @@ classdef MokuPhasemeter < moku
             % 
             % :type ac: bool
             % :param ac: AC-couple; default DC.
-            if isempty(channel)
-                channel = 'true';
+            if nargin < 3 || isempty(atten)
+                atten = 'false';
             end
-            if isempty(fiftyr)
+            if nargin < 2 || isempty(fiftyr)
                 fiftyr = 'false';
             end
-            if isempty(atten)
-                atten = 'false';
+            if nargin < 1 || isempty(channel)
+                channel = 'true';
             end
 
             mokuctl(obj, 'set_frontend', channel, fiftyr, atten);
@@ -296,6 +305,9 @@ classdef MokuPhasemeter < moku
             % 
             % :raises ValueError: If the channel number is invalid.
             % :raises ValueOutOfRangeException: If the frequency parameter is out of range.
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
+            end
 
             mokuctl(obj, 'set_initfreq', ch);
         end
@@ -338,20 +350,20 @@ classdef MokuPhasemeter < moku
             % 
             % :raises ValueError: if invalid channel enable parameter
             % :raises ValueOutOfRangeException: if duration is invalid
-            if isempty(duration)
-                duration = 10;
+            if nargin < 5 || isempty(filetype)
+                filetype = 'csv';
             end
-            if isempty(ch1)
-                ch1 = 'true';
-            end
-            if isempty(ch2)
-                ch2 = 'true';
-            end
-            if isempty(use_sd)
+            if nargin < 4 || isempty(use_sd)
                 use_sd = 'true';
             end
-            if isempty(filetype)
-                filetype = 'csv';
+            if nargin < 3 || isempty(ch2)
+                ch2 = 'true';
+            end
+            if nargin < 2 || isempty(ch1)
+                ch1 = 'true';
+            end
+            if nargin < 1 || isempty(duration)
+                duration = 10;
             end
 
             mokuctl(obj, 'start_data_log', duration, ch1, ch2, use_sd, filetype);
@@ -375,14 +387,14 @@ classdef MokuPhasemeter < moku
             % 
             % :raises ValueError: if invalid channel enable parameter
             % :raises ValueOutOfRangeException: if duration is invalid
-            if isempty(duration)
-                duration = 10;
+            if nargin < 3 || isempty(ch2)
+                ch2 = 'true';
             end
-            if isempty(ch1)
+            if nargin < 2 || isempty(ch1)
                 ch1 = 'true';
             end
-            if isempty(ch2)
-                ch2 = 'true';
+            if nargin < 1 || isempty(duration)
+                duration = 10;
             end
 
             mokuctl(obj, 'start_stream_data', duration, ch1, ch2);

@@ -48,8 +48,17 @@ classdef MokuWaveformGenerator < moku
             % :param frequency: Frequency of internally-generated sine wave modulation. This parameter is ignored if the source is set to ADC or DAC.
             % 
             % :raises ValueOutOfRangeException: if the channel number is invalid or modulation parameters can't be achieved
-            if isempty(depth)
+            if nargin < 4 || isempty(depth)
                 depth = 0.0;
+            end
+            if nargin < 3 || isempty(source)
+                source = 'nil';
+            end
+            if nargin < 2 || isempty(mtype)
+                mtype = 'nil';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'gen_modulate', ch, mtype, source, depth);
@@ -63,7 +72,7 @@ classdef MokuWaveformGenerator < moku
             % 
             % :type ch: int; {1,2} or None
             % :param ch: Output channel to turn modulation off.
-            if isempty(ch)
+            if nargin < 1 || isempty(ch)
                 ch = 'nil';
             end
 
@@ -82,7 +91,7 @@ classdef MokuWaveformGenerator < moku
             % 
             % :raises ValueError: invalid channel number
             % :raises ValueOutOfRangeException: if the channel number is invalid
-            if isempty(ch)
+            if nargin < 1 || isempty(ch)
                 ch = 'nil';
             end
 
@@ -115,14 +124,20 @@ classdef MokuWaveformGenerator < moku
             % 
             % :raises ValueError: invalid channel number
             % :raises ValueOutOfRangeException: invalid waveform parameters
-            if isempty(frequency)
-                frequency = 0;
+            if nargin < 5 || isempty(symmetry)
+                symmetry = 0.0;
             end
-            if isempty(offset)
+            if nargin < 4 || isempty(offset)
                 offset = 0.5;
             end
-            if isempty(symmetry)
-                symmetry = 0.0;
+            if nargin < 3 || isempty(frequency)
+                frequency = 0;
+            end
+            if nargin < 2 || isempty(amplitude)
+                amplitude = 'nil';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'gen_rampwave', ch, amplitude, frequency, offset, symmetry);
@@ -148,11 +163,17 @@ classdef MokuWaveformGenerator < moku
             % 
             % :raises ValueError: if the channel number is invalid
             % :raises ValueOutOfRangeException: if wave parameters are out of range
-            if isempty(frequency)
+            if nargin < 4 || isempty(offset)
+                offset = 0.0;
+            end
+            if nargin < 3 || isempty(frequency)
                 frequency = 0;
             end
-            if isempty(offset)
-                offset = 0.0;
+            if nargin < 2 || isempty(amplitude)
+                amplitude = 'nil';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'gen_sinewave', ch, amplitude, frequency, offset);
@@ -187,20 +208,26 @@ classdef MokuWaveformGenerator < moku
             % 
             % :raises ValueError: invalid channel number
             % :raises ValueOutOfRangeException: input parameters out of range or incompatible with one another
-            if isempty(frequency)
-                frequency = 0;
+            if nargin < 7 || isempty(falltime)
+                falltime = 0.0;
             end
-            if isempty(offset)
-                offset = 0.5;
-            end
-            if isempty(duty)
-                duty = 0;
-            end
-            if isempty(risetime)
+            if nargin < 6 || isempty(risetime)
                 risetime = 0;
             end
-            if isempty(falltime)
-                falltime = 0.0;
+            if nargin < 5 || isempty(duty)
+                duty = 0;
+            end
+            if nargin < 4 || isempty(offset)
+                offset = 0.5;
+            end
+            if nargin < 3 || isempty(frequency)
+                frequency = 0;
+            end
+            if nargin < 2 || isempty(amplitude)
+                amplitude = 'nil';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'gen_squarewave', ch, amplitude, frequency, offset, duty, risetime, falltime);

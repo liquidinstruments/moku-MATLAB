@@ -39,7 +39,7 @@ classdef MokuBodeAnalyser < moku
             % 
             % :type ch: int; {1,2}
             % :param ch: Channel number to turn off (None, or leave blank, for both)
-            if isempty(ch)
+            if nargin < 1 || isempty(ch)
                 ch = 'nil';
             end
 
@@ -50,11 +50,11 @@ classdef MokuBodeAnalyser < moku
             % Get current sweep data.
             % In the BodeAnalyser this is an alias for ``get_realtime_data`` as the data
             % is never downsampled. 
-            if isempty(timeout)
-                timeout = 'nil';
-            end
-            if isempty(wait)
+            if nargin < 2 || isempty(wait)
                 wait = 'true';
+            end
+            if nargin < 1 || isempty(timeout)
+                timeout = 'nil';
             end
 
             mokuctl(obj, 'get_data', timeout, wait);
@@ -106,11 +106,11 @@ classdef MokuBodeAnalyser < moku
             %         recently-applied settings, otherwise just return the most recently captured valid data.
             % 
             % :return: :any:`InstrumentData` subclass, specific to the instrument.
-            if isempty(timeout)
-                timeout = 'nil';
-            end
-            if isempty(wait)
+            if nargin < 2 || isempty(wait)
                 wait = 'true';
+            end
+            if nargin < 1 || isempty(timeout)
+                timeout = 'nil';
             end
 
             mokuctl(obj, 'get_realtime_data', timeout, wait);
@@ -136,14 +136,14 @@ classdef MokuBodeAnalyser < moku
             % 
             % :type ac: bool
             % :param ac: AC-couple; default DC.
-            if isempty(channel)
-                channel = 'true';
+            if nargin < 3 || isempty(atten)
+                atten = 'false';
             end
-            if isempty(fiftyr)
+            if nargin < 2 || isempty(fiftyr)
                 fiftyr = 'false';
             end
-            if isempty(atten)
-                atten = 'false';
+            if nargin < 1 || isempty(channel)
+                channel = 'true';
             end
 
             mokuctl(obj, 'set_frontend', channel, fiftyr, atten);
@@ -161,6 +161,9 @@ classdef MokuBodeAnalyser < moku
             % 
             % :param amplitude: float; [0.0,2.0] Vpp
             % :type amplitude: Sweep amplitude
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
+            end
 
             mokuctl(obj, 'set_output', ch);
         end
@@ -191,29 +194,29 @@ classdef MokuBodeAnalyser < moku
             % 
             % :type settling_cycles: int; cycles
             % :param settling_cycles: Minimum settling cycles per sweep point.
-            if isempty(f_start)
-                f_start = 100;
+            if nargin < 8 || isempty(settling_cycles)
+                settling_cycles = 1;
             end
-            if isempty(f_end)
-                f_end = 125000000.0;
-            end
-            if isempty(sweep_points)
-                sweep_points = 512;
-            end
-            if isempty(sweep_log)
-                sweep_log = 'false';
-            end
-            if isempty(averaging_time)
-                averaging_time = 0.001;
-            end
-            if isempty(settling_time)
-                settling_time = 0.001;
-            end
-            if isempty(averaging_cycles)
+            if nargin < 7 || isempty(averaging_cycles)
                 averaging_cycles = 1;
             end
-            if isempty(settling_cycles)
-                settling_cycles = 1;
+            if nargin < 6 || isempty(settling_time)
+                settling_time = 0.001;
+            end
+            if nargin < 5 || isempty(averaging_time)
+                averaging_time = 0.001;
+            end
+            if nargin < 4 || isempty(sweep_log)
+                sweep_log = 'false';
+            end
+            if nargin < 3 || isempty(sweep_points)
+                sweep_points = 512;
+            end
+            if nargin < 2 || isempty(f_end)
+                f_end = 125000000.0;
+            end
+            if nargin < 1 || isempty(f_start)
+                f_start = 100;
             end
 
             mokuctl(obj, 'set_sweep', f_start, f_end, sweep_points, sweep_log, averaging_time, settling_time, averaging_cycles, settling_cycles);
@@ -224,7 +227,7 @@ classdef MokuBodeAnalyser < moku
             % 
             % :type single: bool
             % :param single: Enable single sweep (otherwise loop)
-            if isempty(single)
+            if nargin < 1 || isempty(single)
                 single = 'false';
             end
 

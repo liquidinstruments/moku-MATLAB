@@ -50,7 +50,7 @@ classdef MokuOscilloscope < moku
             % 
             % :raises ValueError: invalid channel number
             % :raises ValueOutOfRangeException: if the channel number is invalid
-            if isempty(ch)
+            if nargin < 1 || isempty(ch)
                 ch = 'nil';
             end
 
@@ -83,14 +83,20 @@ classdef MokuOscilloscope < moku
             % 
             % :raises ValueError: invalid channel number
             % :raises ValueOutOfRangeException: invalid waveform parameters
-            if isempty(frequency)
-                frequency = 0;
+            if nargin < 5 || isempty(symmetry)
+                symmetry = 0.0;
             end
-            if isempty(offset)
+            if nargin < 4 || isempty(offset)
                 offset = 0.5;
             end
-            if isempty(symmetry)
-                symmetry = 0.0;
+            if nargin < 3 || isempty(frequency)
+                frequency = 0;
+            end
+            if nargin < 2 || isempty(amplitude)
+                amplitude = 'nil';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'gen_rampwave', ch, amplitude, frequency, offset, symmetry);
@@ -116,11 +122,17 @@ classdef MokuOscilloscope < moku
             % 
             % :raises ValueError: if the channel number is invalid
             % :raises ValueOutOfRangeException: if wave parameters are out of range
-            if isempty(frequency)
+            if nargin < 4 || isempty(offset)
+                offset = 0.0;
+            end
+            if nargin < 3 || isempty(frequency)
                 frequency = 0;
             end
-            if isempty(offset)
-                offset = 0.0;
+            if nargin < 2 || isempty(amplitude)
+                amplitude = 'nil';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'gen_sinewave', ch, amplitude, frequency, offset);
@@ -155,20 +167,26 @@ classdef MokuOscilloscope < moku
             % 
             % :raises ValueError: invalid channel number
             % :raises ValueOutOfRangeException: input parameters out of range or incompatible with one another
-            if isempty(frequency)
-                frequency = 0;
+            if nargin < 7 || isempty(falltime)
+                falltime = 0.0;
             end
-            if isempty(offset)
-                offset = 0.5;
-            end
-            if isempty(duty)
-                duty = 0;
-            end
-            if isempty(risetime)
+            if nargin < 6 || isempty(risetime)
                 risetime = 0;
             end
-            if isempty(falltime)
-                falltime = 0.0;
+            if nargin < 5 || isempty(duty)
+                duty = 0;
+            end
+            if nargin < 4 || isempty(offset)
+                offset = 0.5;
+            end
+            if nargin < 3 || isempty(frequency)
+                frequency = 0;
+            end
+            if nargin < 2 || isempty(amplitude)
+                amplitude = 'nil';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'gen_squarewave', ch, amplitude, frequency, offset, duty, risetime, falltime);
@@ -204,11 +222,11 @@ classdef MokuOscilloscope < moku
             %         recently-applied settings, otherwise just return the most recently captured valid data.
             % 
             % :return: :any:`InstrumentData` subclass, specific to the instrument.
-            if isempty(timeout)
-                timeout = 'nil';
-            end
-            if isempty(wait)
+            if nargin < 2 || isempty(wait)
                 wait = 'true';
+            end
+            if nargin < 1 || isempty(timeout)
+                timeout = 'nil';
             end
 
             mokuctl(obj, 'get_data', timeout, wait);
@@ -260,11 +278,11 @@ classdef MokuOscilloscope < moku
             %         recently-applied settings, otherwise just return the most recently captured valid data.
             % 
             % :return: :any:`InstrumentData` subclass, specific to the instrument.
-            if isempty(timeout)
-                timeout = 'nil';
-            end
-            if isempty(wait)
+            if nargin < 2 || isempty(wait)
                 wait = 'true';
+            end
+            if nargin < 1 || isempty(timeout)
+                timeout = 'nil';
             end
 
             mokuctl(obj, 'get_realtime_data', timeout, wait);
@@ -296,14 +314,14 @@ classdef MokuOscilloscope < moku
             % 
             % :type ac: bool
             % :param ac: AC-couple; default DC.
-            if isempty(channel)
-                channel = 'true';
+            if nargin < 3 || isempty(atten)
+                atten = 'false';
             end
-            if isempty(fiftyr)
+            if nargin < 2 || isempty(fiftyr)
                 fiftyr = 'false';
             end
-            if isempty(atten)
-                atten = 'false';
+            if nargin < 1 || isempty(channel)
+                channel = 'true';
             end
 
             mokuctl(obj, 'set_frontend', channel, fiftyr, atten);
@@ -339,7 +357,7 @@ classdef MokuOscilloscope < moku
             % :param trigger_offset: Number of samples before (-) or after (+) the trigger point to start capturing.
             % 
             % :raises ValueOutOfRangeException: if either parameter is out of range.
-            if isempty(samplerate)
+            if nargin < 1 || isempty(samplerate)
                 samplerate = 0;
             end
 
@@ -359,8 +377,11 @@ classdef MokuOscilloscope < moku
             % 
             % :type lmode: string, {'clip','round'}
             % :param lmode: DAC Loopback mode (ignored 'in' sources)
-            if isempty(source)
+            if nargin < 2 || isempty(source)
                 source = 'round';
+            end
+            if nargin < 1 || isempty(ch)
+                ch = 'nil';
             end
 
             mokuctl(obj, 'set_source', ch, source);
@@ -379,6 +400,9 @@ classdef MokuOscilloscope < moku
             % :param t2: As *t1* but to the right of screen.
             % 
             % :raises InvalidConfigurationException: if the timebase is backwards or zero.
+            if nargin < 1 || isempty(t1)
+                t1 = 'nil';
+            end
 
             mokuctl(obj, 'set_timebase', t1);
         end
@@ -419,14 +443,20 @@ classdef MokuOscilloscope < moku
             %         ``mode='normal'`` then retrieve a single frame using :any:`get_data <pymoku.instruments.Oscilloscope.get_data>`
             %         or :any:`get_realtime_data <pymoku.instruments.Oscilloscope.get_realtime_data>`
             %         with ``wait=True``.
-            if isempty(level)
-                level = 'false';
+            if nargin < 5 || isempty(hf_reject)
+                hf_reject = 'auto';
             end
-            if isempty(hysteresis)
+            if nargin < 4 || isempty(hysteresis)
                 hysteresis = 'false';
             end
-            if isempty(hf_reject)
-                hf_reject = 'auto';
+            if nargin < 3 || isempty(level)
+                level = 'false';
+            end
+            if nargin < 2 || isempty(edge)
+                edge = 'nil';
+            end
+            if nargin < 1 || isempty(source)
+                source = 'nil';
             end
 
             mokuctl(obj, 'set_trigger', source, edge, level, hysteresis, hf_reject);
