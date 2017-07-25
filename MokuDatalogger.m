@@ -38,6 +38,7 @@ classdef MokuDatalogger < moku
             %     If the `autocommit` feature has been turned off, this function can be used to manually apply any instrument
             %     settings to the Moku device. These instrument settings are those configured by calling all *set_* and *gen_* type
             %     functions. Manually calling this function allows you to atomically apply many instrument settings at once.
+
             mokuctl(obj, 'commit');
         end
 
@@ -49,6 +50,7 @@ classdef MokuDatalogger < moku
             % 
             % :rtype: str
             % :returns: The file name of the current, or most recent, log file.
+
             mokuctl(obj, 'data_log_filename');
         end
 
@@ -64,6 +66,10 @@ classdef MokuDatalogger < moku
             % 
             % :raises ValueError: invalid channel number
             % :raises ValueOutOfRangeException: if the channel number is invalid
+            if isempty(ch)
+                ch = 'nil';
+            end
+
             mokuctl(obj, 'gen_off', ch);
         end
 
@@ -102,6 +108,7 @@ classdef MokuDatalogger < moku
             if isempty(symmetry)
                 symmetry = 0.0;
             end
+
             mokuctl(obj, 'gen_rampwave', ch, amplitude, frequency, offset, symmetry);
         end
 
@@ -131,6 +138,7 @@ classdef MokuDatalogger < moku
             if isempty(offset)
                 offset = 0.0;
             end
+
             mokuctl(obj, 'gen_sinewave', ch, amplitude, frequency, offset);
         end
 
@@ -178,6 +186,7 @@ classdef MokuDatalogger < moku
             if isempty(falltime)
                 falltime = 0.0;
             end
+
             mokuctl(obj, 'gen_squarewave', ch, amplitude, frequency, offset, duty, risetime, falltime);
         end
 
@@ -191,11 +200,13 @@ classdef MokuDatalogger < moku
             %         - [0] 50 Ohm
             %         - [1] 10xAttenuation
             %         - [2] AC Coupling
+
             mokuctl(obj, 'get_frontend');
         end
 
         function get_samplerate(obj)
             % :return: The current instrument sample rate 
+
             mokuctl(obj, 'get_samplerate');
         end
 
@@ -223,6 +234,10 @@ classdef MokuDatalogger < moku
             if isempty(n)
                 n = 0;
             end
+            if isempty(timeout)
+                timeout = 'nil';
+            end
+
             mokuctl(obj, 'get_stream_data', n, timeout);
         end
 
@@ -234,6 +249,7 @@ classdef MokuDatalogger < moku
             % 
             % :rtype: float
             % :returns: Time between data samples in seconds.
+
             mokuctl(obj, 'get_timestep');
         end
 
@@ -245,11 +261,13 @@ classdef MokuDatalogger < moku
             % Note that 100% is only returned when the session has completed, the progress may pause at 99% for a time
             % as internal buffers are flushed.
             % :raises: StreamException: if an error occurred with the current logging session.
+
             mokuctl(obj, 'progress_data_log');
         end
 
         function set_defaults(obj)
             % Can be extended in implementations to set initial state 
+
             mokuctl(obj, 'set_defaults');
         end
 
@@ -268,14 +286,15 @@ classdef MokuDatalogger < moku
             % :type ac: bool
             % :param ac: AC-couple; default DC.
             if isempty(channel)
-                channel = True;
+                channel = 'true';
             end
             if isempty(fiftyr)
-                fiftyr = False;
+                fiftyr = 'false';
             end
             if isempty(atten)
-                atten = False;
+                atten = 'false';
             end
+
             mokuctl(obj, 'set_frontend', channel, fiftyr, atten);
         end
 
@@ -288,6 +307,7 @@ classdef MokuDatalogger < moku
             % :type state: bool
             % 
             % :raises ValueError: if input parameter is invalid
+
             mokuctl(obj, 'set_precision_mode');
         end
 
@@ -304,6 +324,7 @@ classdef MokuDatalogger < moku
             % :param samplerate: Target samples per second. Will get rounded to the nearest unit.
             % 
             % :raises ValueOutOfRangeException: if samplerate is out of range.
+
             mokuctl(obj, 'set_samplerate');
         end
 
@@ -324,8 +345,9 @@ classdef MokuDatalogger < moku
             % :raises ValueOutOfRangeException: if the channel number is incorrect
             % :raises ValueError: if any of the string parameters are incorrect
             if isempty(source)
-                source = round;
+                source = 'round';
             end
+
             mokuctl(obj, 'set_source', ch, source);
         end
 
@@ -358,17 +380,18 @@ classdef MokuDatalogger < moku
                 duration = 10;
             end
             if isempty(ch1)
-                ch1 = True;
+                ch1 = 'true';
             end
             if isempty(ch2)
-                ch2 = True;
+                ch2 = 'true';
             end
             if isempty(use_sd)
-                use_sd = True;
+                use_sd = 'true';
             end
             if isempty(filetype)
-                filetype = csv;
+                filetype = 'csv';
             end
+
             mokuctl(obj, 'start_data_log', duration, ch1, ch2, use_sd, filetype);
         end
 
@@ -394,11 +417,12 @@ classdef MokuDatalogger < moku
                 duration = 10;
             end
             if isempty(ch1)
-                ch1 = True;
+                ch1 = 'true';
             end
             if isempty(ch2)
-                ch2 = True;
+                ch2 = 'true';
             end
+
             mokuctl(obj, 'start_stream_data', duration, ch1, ch2);
         end
 
@@ -408,6 +432,7 @@ classdef MokuDatalogger < moku
             % This must be called exactly once for every `start_data_log` call, even if the log terminated itself
             % due to timeout. Calling this function doesn't just stop the session (if it isn't already stopped),
             % but also resets error and transfer state, ready to start a new logging session.
+
             mokuctl(obj, 'stop_data_log');
         end
 
@@ -417,6 +442,7 @@ classdef MokuDatalogger < moku
             % Should be called exactly once for every `start_stream_data` call, even if the streaming session
             % stopped itself due to timeout. Calling this function not only causes the stream to stop, but
             % also resets error and transfer state, ready to start a new streaming session.
+
             mokuctl(obj, 'stop_stream_data');
         end
 
@@ -425,6 +451,7 @@ classdef MokuDatalogger < moku
             % 
             % :raises NotDeployedException: if the instrument is not yet operational.
             % :raises InvalidOperationException: if no files are present.
+
             mokuctl(obj, 'upload_data_log');
         end
 

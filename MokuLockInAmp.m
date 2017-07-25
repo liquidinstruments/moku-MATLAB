@@ -35,6 +35,7 @@ classdef MokuLockInAmp < moku
             %     If the `autocommit` feature has been turned off, this function can be used to manually apply any instrument
             %     settings to the Moku device. These instrument settings are those configured by calling all *set_* and *gen_* type
             %     functions. Manually calling this function allows you to atomically apply many instrument settings at once.
+
             mokuctl(obj, 'commit');
         end
 
@@ -68,9 +69,13 @@ classdef MokuLockInAmp < moku
             %         recently-applied settings, otherwise just return the most recently captured valid data.
             % 
             % :return: :any:`InstrumentData` subclass, specific to the instrument.
-            if isempty(wait)
-                wait = True;
+            if isempty(timeout)
+                timeout = 'nil';
             end
+            if isempty(wait)
+                wait = 'true';
+            end
+
             mokuctl(obj, 'get_data', timeout, wait);
         end
 
@@ -84,6 +89,7 @@ classdef MokuLockInAmp < moku
             %         - [0] 50 Ohm
             %         - [1] 10xAttenuation
             %         - [2] AC Coupling
+
             mokuctl(obj, 'get_frontend');
         end
 
@@ -119,19 +125,25 @@ classdef MokuLockInAmp < moku
             %         recently-applied settings, otherwise just return the most recently captured valid data.
             % 
             % :return: :any:`InstrumentData` subclass, specific to the instrument.
-            if isempty(wait)
-                wait = True;
+            if isempty(timeout)
+                timeout = 'nil';
             end
+            if isempty(wait)
+                wait = 'true';
+            end
+
             mokuctl(obj, 'get_realtime_data', timeout, wait);
         end
 
         function get_samplerate(obj)
             % :return: The current instrument sample rate (Hz) 
+
             mokuctl(obj, 'get_samplerate');
         end
 
         function set_defaults(obj)
             % Reset the lockinamp to sane defaults. 
+
             mokuctl(obj, 'set_defaults');
         end
 
@@ -151,11 +163,12 @@ classdef MokuLockInAmp < moku
             % :type mode: string {'range', 'precision'}
             % :param mode: Selects signal mode, either optimising for high dynamic range or high precision.
             if isempty(order)
-                order = False;
+                order = 'false';
             end
             if isempty(integrator)
-                integrator = range;
+                integrator = 'range';
             end
+
             mokuctl(obj, 'set_filter_parameters', gain, f_corner, order, integrator);
         end
 
@@ -174,14 +187,15 @@ classdef MokuLockInAmp < moku
             % :type ac: bool
             % :param ac: AC-couple; default DC.
             if isempty(channel)
-                channel = True;
+                channel = 'true';
             end
             if isempty(fiftyr)
-                fiftyr = False;
+                fiftyr = 'false';
             end
             if isempty(atten)
-                atten = False;
+                atten = 'false';
             end
+
             mokuctl(obj, 'set_frontend', channel, fiftyr, atten);
         end
 
@@ -195,6 +209,7 @@ classdef MokuLockInAmp < moku
             % 
             % :type offset: float
             % :param offset: (V)
+
             mokuctl(obj, 'set_lo_output', amplitude);
         end
 
@@ -210,8 +225,9 @@ classdef MokuLockInAmp < moku
             % :type use_q: bool
             % :param use_q: Use the quadrature output from the mixer (default in-phase)
             if isempty(phase)
-                phase = False;
+                phase = 'false';
             end
+
             mokuctl(obj, 'set_lo_parameters', frequency, phase);
         end
 
@@ -227,6 +243,7 @@ classdef MokuLockInAmp < moku
             %         - **out**: Lock-in output
             %         - **lo**: Local Oscillator output
             %         - **i**, **q**: Mixer I and Q channels respectively.
+
             mokuctl(obj, 'set_monitor', ch);
         end
 
@@ -238,6 +255,7 @@ classdef MokuLockInAmp < moku
             % 
             % :type offset: float
             % :param offset: (V)
+
             mokuctl(obj, 'set_output_offset');
         end
 
@@ -251,6 +269,7 @@ classdef MokuLockInAmp < moku
             % 
             % :param state: Select Precision Mode
             % :type state: bool
+
             mokuctl(obj, 'set_precision_mode');
         end
 
@@ -273,6 +292,7 @@ classdef MokuLockInAmp < moku
             if isempty(samplerate)
                 samplerate = 0;
             end
+
             mokuctl(obj, 'set_samplerate', samplerate);
         end
 
@@ -290,8 +310,9 @@ classdef MokuLockInAmp < moku
             % :type lmode: string, {'clip','round'}
             % :param lmode: DAC Loopback mode (ignored 'in' sources)
             if isempty(source)
-                source = round;
+                source = 'round';
             end
+
             mokuctl(obj, 'set_source', ch, source);
         end
 
@@ -308,6 +329,7 @@ classdef MokuLockInAmp < moku
             % :param t2: As *t1* but to the right of screen.
             % 
             % :raises InvalidConfigurationException: if the timebase is backwards or zero.
+
             mokuctl(obj, 'set_timebase', t1);
         end
 
@@ -348,14 +370,15 @@ classdef MokuLockInAmp < moku
             %         or :any:`get_realtime_data <pymoku.instruments.Oscilloscope.get_realtime_data>`
             %         with ``wait=True``.
             if isempty(level)
-                level = False;
+                level = 'false';
             end
             if isempty(hysteresis)
-                hysteresis = False;
+                hysteresis = 'false';
             end
             if isempty(hf_reject)
-                hf_reject = auto;
+                hf_reject = 'auto';
             end
+
             mokuctl(obj, 'set_trigger', source, edge, level, hysteresis, hf_reject);
         end
 
@@ -366,6 +389,7 @@ classdef MokuLockInAmp < moku
             % :param xmode:
             %         Respectively; Roll Mode (scrolling), Sweep Mode (normal oscilloscope trace sweeping across the screen)
             %         or Full Frame (like sweep, but waits for the frame to be completed).
+
             mokuctl(obj, 'set_xmode');
         end
 

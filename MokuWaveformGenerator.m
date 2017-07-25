@@ -25,6 +25,7 @@ classdef MokuWaveformGenerator < moku
             %     If the `autocommit` feature has been turned off, this function can be used to manually apply any instrument
             %     settings to the Moku device. These instrument settings are those configured by calling all *set_* and *gen_* type
             %     functions. Manually calling this function allows you to atomically apply many instrument settings at once.
+
             mokuctl(obj, 'commit');
         end
 
@@ -50,6 +51,7 @@ classdef MokuWaveformGenerator < moku
             if isempty(depth)
                 depth = 0.0;
             end
+
             mokuctl(obj, 'gen_modulate', ch, mtype, source, depth);
         end
 
@@ -61,6 +63,10 @@ classdef MokuWaveformGenerator < moku
             % 
             % :type ch: int; {1,2} or None
             % :param ch: Output channel to turn modulation off.
+            if isempty(ch)
+                ch = 'nil';
+            end
+
             mokuctl(obj, 'gen_modulate_off', ch);
         end
 
@@ -76,6 +82,10 @@ classdef MokuWaveformGenerator < moku
             % 
             % :raises ValueError: invalid channel number
             % :raises ValueOutOfRangeException: if the channel number is invalid
+            if isempty(ch)
+                ch = 'nil';
+            end
+
             mokuctl(obj, 'gen_off', ch);
         end
 
@@ -114,6 +124,7 @@ classdef MokuWaveformGenerator < moku
             if isempty(symmetry)
                 symmetry = 0.0;
             end
+
             mokuctl(obj, 'gen_rampwave', ch, amplitude, frequency, offset, symmetry);
         end
 
@@ -143,6 +154,7 @@ classdef MokuWaveformGenerator < moku
             if isempty(offset)
                 offset = 0.0;
             end
+
             mokuctl(obj, 'gen_sinewave', ch, amplitude, frequency, offset);
         end
 
@@ -190,12 +202,14 @@ classdef MokuWaveformGenerator < moku
             if isempty(falltime)
                 falltime = 0.0;
             end
+
             mokuctl(obj, 'gen_squarewave', ch, amplitude, frequency, offset, duty, risetime, falltime);
         end
 
         function set_defaults(obj)
             % Set sane defaults.
             % Defaults are outputs off, amplitudes and frequencies zero.
+
             mokuctl(obj, 'set_defaults');
         end
 

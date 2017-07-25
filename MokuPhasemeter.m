@@ -43,6 +43,10 @@ classdef MokuPhasemeter < moku
             % :param ch: Channel number, or ``None`` for both
             % 
             % :raises ValueError: If the channel number is invalid.
+            if isempty(ch)
+                ch = 'nil';
+            end
+
             mokuctl(obj, 'auto_acquire', ch);
         end
 
@@ -54,6 +58,7 @@ classdef MokuPhasemeter < moku
             %     If the `autocommit` feature has been turned off, this function can be used to manually apply any instrument
             %     settings to the Moku device. These instrument settings are those configured by calling all *set_* and *gen_* type
             %     functions. Manually calling this function allows you to atomically apply many instrument settings at once.
+
             mokuctl(obj, 'commit');
         end
 
@@ -65,6 +70,7 @@ classdef MokuPhasemeter < moku
             % 
             % :rtype: str
             % :returns: The file name of the current, or most recent, log file.
+
             mokuctl(obj, 'data_log_filename');
         end
 
@@ -79,6 +85,10 @@ classdef MokuPhasemeter < moku
             % :param ch: Channel to turn off or *None* for all channels
             % 
             % :raises ValueOutOfRangeException: if the channel number is invalid
+            if isempty(ch)
+                ch = 'nil';
+            end
+
             mokuctl(obj, 'gen_off', ch);
         end
 
@@ -99,6 +109,7 @@ classdef MokuPhasemeter < moku
             if isempty(frequency)
                 frequency = 0.0;
             end
+
             mokuctl(obj, 'gen_sinewave', ch, amplitude, frequency);
         end
 
@@ -112,6 +123,7 @@ classdef MokuPhasemeter < moku
             % :return: Bandwidth
             % 
             % :raises ValueError: If the channel number is invalid.
+
             mokuctl(obj, 'get_bandwidth');
         end
 
@@ -125,6 +137,7 @@ classdef MokuPhasemeter < moku
             %         - [0] 50 Ohm
             %         - [1] 10xAttenuation
             %         - [2] AC Coupling
+
             mokuctl(obj, 'get_frontend');
         end
 
@@ -138,6 +151,7 @@ classdef MokuPhasemeter < moku
             % :return: Seed frequency
             % 
             % :raises ValueError: If the channel number is invalid.
+
             mokuctl(obj, 'get_initfreq');
         end
 
@@ -146,6 +160,7 @@ classdef MokuPhasemeter < moku
             % 
             % :rtype: float; smp/s
             % :return: Samplerate
+
             mokuctl(obj, 'get_samplerate');
         end
 
@@ -173,6 +188,10 @@ classdef MokuPhasemeter < moku
             if isempty(n)
                 n = 0;
             end
+            if isempty(timeout)
+                timeout = 'nil';
+            end
+
             mokuctl(obj, 'get_stream_data', n, timeout);
         end
 
@@ -184,6 +203,7 @@ classdef MokuPhasemeter < moku
             % 
             % :rtype: float
             % :returns: Time between data samples in seconds.
+
             mokuctl(obj, 'get_timestep');
         end
 
@@ -195,6 +215,7 @@ classdef MokuPhasemeter < moku
             % Note that 100% is only returned when the session has completed, the progress may pause at 99% for a time
             % as internal buffers are flushed.
             % :raises: StreamException: if an error occurred with the current logging session.
+
             mokuctl(obj, 'progress_data_log');
         end
 
@@ -209,6 +230,10 @@ classdef MokuPhasemeter < moku
             % :param ch: Channel number, or ``None`` for both
             % 
             % :raises ValueError: If the channel number is invalid.
+            if isempty(ch)
+                ch = 'nil';
+            end
+
             mokuctl(obj, 'reacquire', ch);
         end
 
@@ -223,11 +248,13 @@ classdef MokuPhasemeter < moku
             % 
             % :raises ValueError: If the channel number is invalid.
             % :raises ValueOutOfRangeException: if the bandwidth is not positive-definite or the channel number is invalid
+
             mokuctl(obj, 'set_bandwidth', ch);
         end
 
         function set_defaults(obj)
             % Can be extended in implementations to set initial state 
+
             mokuctl(obj, 'set_defaults');
         end
 
@@ -246,14 +273,15 @@ classdef MokuPhasemeter < moku
             % :type ac: bool
             % :param ac: AC-couple; default DC.
             if isempty(channel)
-                channel = True;
+                channel = 'true';
             end
             if isempty(fiftyr)
-                fiftyr = False;
+                fiftyr = 'false';
             end
             if isempty(atten)
-                atten = False;
+                atten = 'false';
             end
+
             mokuctl(obj, 'set_frontend', channel, fiftyr, atten);
         end
 
@@ -268,6 +296,7 @@ classdef MokuPhasemeter < moku
             % 
             % :raises ValueError: If the channel number is invalid.
             % :raises ValueOutOfRangeException: If the frequency parameter is out of range.
+
             mokuctl(obj, 'set_initfreq', ch);
         end
 
@@ -280,6 +309,7 @@ classdef MokuPhasemeter < moku
             % :param samplerate: Desired sample rate
             % 
             % :raises ValueError: If samplerate parameter is invalid.
+
             mokuctl(obj, 'set_samplerate');
         end
 
@@ -312,17 +342,18 @@ classdef MokuPhasemeter < moku
                 duration = 10;
             end
             if isempty(ch1)
-                ch1 = True;
+                ch1 = 'true';
             end
             if isempty(ch2)
-                ch2 = True;
+                ch2 = 'true';
             end
             if isempty(use_sd)
-                use_sd = True;
+                use_sd = 'true';
             end
             if isempty(filetype)
-                filetype = csv;
+                filetype = 'csv';
             end
+
             mokuctl(obj, 'start_data_log', duration, ch1, ch2, use_sd, filetype);
         end
 
@@ -348,11 +379,12 @@ classdef MokuPhasemeter < moku
                 duration = 10;
             end
             if isempty(ch1)
-                ch1 = True;
+                ch1 = 'true';
             end
             if isempty(ch2)
-                ch2 = True;
+                ch2 = 'true';
             end
+
             mokuctl(obj, 'start_stream_data', duration, ch1, ch2);
         end
 
@@ -362,6 +394,7 @@ classdef MokuPhasemeter < moku
             % This must be called exactly once for every `start_data_log` call, even if the log terminated itself
             % due to timeout. Calling this function doesn't just stop the session (if it isn't already stopped),
             % but also resets error and transfer state, ready to start a new logging session.
+
             mokuctl(obj, 'stop_data_log');
         end
 
@@ -371,6 +404,7 @@ classdef MokuPhasemeter < moku
             % Should be called exactly once for every `start_stream_data` call, even if the streaming session
             % stopped itself due to timeout. Calling this function not only causes the stream to stop, but
             % also resets error and transfer state, ready to start a new streaming session.
+
             mokuctl(obj, 'stop_stream_data');
         end
 
@@ -379,6 +413,7 @@ classdef MokuPhasemeter < moku
             % 
             % :raises NotDeployedException: if the instrument is not yet operational.
             % :raises InvalidOperationException: if no files are present.
+
             mokuctl(obj, 'upload_data_log');
         end
 

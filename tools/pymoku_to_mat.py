@@ -20,6 +20,20 @@ def firstline(line):
 
 jinja_env.filters['firstline'] = firstline
 
+
+def translate_type(param):
+    if param is True:
+        return "'true'"
+    elif param is False:
+        return "'false'"
+    elif param is None:
+        return "'nil'"
+    elif isinstance(param, str):
+        return "'" + param + "'"
+    else:
+        return param
+
+
 def process_object(to_doc):
     funcs = getmembers(to_doc, isfunction)
     outfile = "Moku" + to_doc.__name__ + '.m'
@@ -35,10 +49,10 @@ def process_object(to_doc):
         if name.startswith('_'): continue
         if not doc: continue # If there's no docstring then it's not part of the public API
 
-        no_defs = len(args) - len(defs) - 1 # because we nuked 'self' already
-        defs = [None] * no_defs + list(defs)
+        defs = list(map(translate_type, defs))
 
-        # TODO: Format default value as MATLAB types
+        no_defs = len(args) - len(defs) - 1 # because we nuked 'self' already
+        defs = [None] * no_defs + defs
 
         ArgPair = namedtuple('ArgPair', ['name', 'default'])
         arg_pairs = list(map(ArgPair._make, zip(args, defs)))

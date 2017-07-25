@@ -34,6 +34,7 @@ classdef MokuOscilloscope < moku
             %     If the `autocommit` feature has been turned off, this function can be used to manually apply any instrument
             %     settings to the Moku device. These instrument settings are those configured by calling all *set_* and *gen_* type
             %     functions. Manually calling this function allows you to atomically apply many instrument settings at once.
+
             mokuctl(obj, 'commit');
         end
 
@@ -49,6 +50,10 @@ classdef MokuOscilloscope < moku
             % 
             % :raises ValueError: invalid channel number
             % :raises ValueOutOfRangeException: if the channel number is invalid
+            if isempty(ch)
+                ch = 'nil';
+            end
+
             mokuctl(obj, 'gen_off', ch);
         end
 
@@ -87,6 +92,7 @@ classdef MokuOscilloscope < moku
             if isempty(symmetry)
                 symmetry = 0.0;
             end
+
             mokuctl(obj, 'gen_rampwave', ch, amplitude, frequency, offset, symmetry);
         end
 
@@ -116,6 +122,7 @@ classdef MokuOscilloscope < moku
             if isempty(offset)
                 offset = 0.0;
             end
+
             mokuctl(obj, 'gen_sinewave', ch, amplitude, frequency, offset);
         end
 
@@ -163,6 +170,7 @@ classdef MokuOscilloscope < moku
             if isempty(falltime)
                 falltime = 0.0;
             end
+
             mokuctl(obj, 'gen_squarewave', ch, amplitude, frequency, offset, duty, risetime, falltime);
         end
 
@@ -196,9 +204,13 @@ classdef MokuOscilloscope < moku
             %         recently-applied settings, otherwise just return the most recently captured valid data.
             % 
             % :return: :any:`InstrumentData` subclass, specific to the instrument.
-            if isempty(wait)
-                wait = True;
+            if isempty(timeout)
+                timeout = 'nil';
             end
+            if isempty(wait)
+                wait = 'true';
+            end
+
             mokuctl(obj, 'get_data', timeout, wait);
         end
 
@@ -212,6 +224,7 @@ classdef MokuOscilloscope < moku
             %         - [0] 50 Ohm
             %         - [1] 10xAttenuation
             %         - [2] AC Coupling
+
             mokuctl(obj, 'get_frontend');
         end
 
@@ -247,19 +260,25 @@ classdef MokuOscilloscope < moku
             %         recently-applied settings, otherwise just return the most recently captured valid data.
             % 
             % :return: :any:`InstrumentData` subclass, specific to the instrument.
-            if isempty(wait)
-                wait = True;
+            if isempty(timeout)
+                timeout = 'nil';
             end
+            if isempty(wait)
+                wait = 'true';
+            end
+
             mokuctl(obj, 'get_realtime_data', timeout, wait);
         end
 
         function get_samplerate(obj)
             % :return: The current instrument sample rate (Hz) 
+
             mokuctl(obj, 'get_samplerate');
         end
 
         function set_defaults(obj)
             % Reset the Oscilloscope to sane defaults. 
+
             mokuctl(obj, 'set_defaults');
         end
 
@@ -278,14 +297,15 @@ classdef MokuOscilloscope < moku
             % :type ac: bool
             % :param ac: AC-couple; default DC.
             if isempty(channel)
-                channel = True;
+                channel = 'true';
             end
             if isempty(fiftyr)
-                fiftyr = False;
+                fiftyr = 'false';
             end
             if isempty(atten)
-                atten = False;
+                atten = 'false';
             end
+
             mokuctl(obj, 'set_frontend', channel, fiftyr, atten);
         end
 
@@ -299,6 +319,7 @@ classdef MokuOscilloscope < moku
             % 
             % :param state: Select Precision Mode
             % :type state: bool
+
             mokuctl(obj, 'set_precision_mode');
         end
 
@@ -321,6 +342,7 @@ classdef MokuOscilloscope < moku
             if isempty(samplerate)
                 samplerate = 0;
             end
+
             mokuctl(obj, 'set_samplerate', samplerate);
         end
 
@@ -338,8 +360,9 @@ classdef MokuOscilloscope < moku
             % :type lmode: string, {'clip','round'}
             % :param lmode: DAC Loopback mode (ignored 'in' sources)
             if isempty(source)
-                source = round;
+                source = 'round';
             end
+
             mokuctl(obj, 'set_source', ch, source);
         end
 
@@ -356,6 +379,7 @@ classdef MokuOscilloscope < moku
             % :param t2: As *t1* but to the right of screen.
             % 
             % :raises InvalidConfigurationException: if the timebase is backwards or zero.
+
             mokuctl(obj, 'set_timebase', t1);
         end
 
@@ -396,14 +420,15 @@ classdef MokuOscilloscope < moku
             %         or :any:`get_realtime_data <pymoku.instruments.Oscilloscope.get_realtime_data>`
             %         with ``wait=True``.
             if isempty(level)
-                level = False;
+                level = 'false';
             end
             if isempty(hysteresis)
-                hysteresis = False;
+                hysteresis = 'false';
             end
             if isempty(hf_reject)
-                hf_reject = auto;
+                hf_reject = 'auto';
             end
+
             mokuctl(obj, 'set_trigger', source, edge, level, hysteresis, hf_reject);
         end
 
@@ -414,6 +439,7 @@ classdef MokuOscilloscope < moku
             % :param xmode:
             %         Respectively; Roll Mode (scrolling), Sweep Mode (normal oscilloscope trace sweeping across the screen)
             %         or Full Frame (like sweep, but waits for the frame to be completed).
+
             mokuctl(obj, 'set_xmode');
         end
 

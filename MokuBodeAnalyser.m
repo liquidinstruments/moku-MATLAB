@@ -28,6 +28,7 @@ classdef MokuBodeAnalyser < moku
             %     If the `autocommit` feature has been turned off, this function can be used to manually apply any instrument
             %     settings to the Moku device. These instrument settings are those configured by calling all *set_* and *gen_* type
             %     functions. Manually calling this function allows you to atomically apply many instrument settings at once.
+
             mokuctl(obj, 'commit');
         end
 
@@ -38,6 +39,10 @@ classdef MokuBodeAnalyser < moku
             % 
             % :type ch: int; {1,2}
             % :param ch: Channel number to turn off (None, or leave blank, for both)
+            if isempty(ch)
+                ch = 'nil';
+            end
+
             mokuctl(obj, 'gen_off', ch);
         end
 
@@ -45,9 +50,13 @@ classdef MokuBodeAnalyser < moku
             % Get current sweep data.
             % In the BodeAnalyser this is an alias for ``get_realtime_data`` as the data
             % is never downsampled. 
-            if isempty(wait)
-                wait = True;
+            if isempty(timeout)
+                timeout = 'nil';
             end
+            if isempty(wait)
+                wait = 'true';
+            end
+
             mokuctl(obj, 'get_data', timeout, wait);
         end
 
@@ -61,6 +70,7 @@ classdef MokuBodeAnalyser < moku
             %         - [0] 50 Ohm
             %         - [1] 10xAttenuation
             %         - [2] AC Coupling
+
             mokuctl(obj, 'get_frontend');
         end
 
@@ -96,14 +106,19 @@ classdef MokuBodeAnalyser < moku
             %         recently-applied settings, otherwise just return the most recently captured valid data.
             % 
             % :return: :any:`InstrumentData` subclass, specific to the instrument.
-            if isempty(wait)
-                wait = True;
+            if isempty(timeout)
+                timeout = 'nil';
             end
+            if isempty(wait)
+                wait = 'true';
+            end
+
             mokuctl(obj, 'get_realtime_data', timeout, wait);
         end
 
         function set_defaults(obj)
             % Reset the Bode Analyser to sane defaults 
+
             mokuctl(obj, 'set_defaults');
         end
 
@@ -122,14 +137,15 @@ classdef MokuBodeAnalyser < moku
             % :type ac: bool
             % :param ac: AC-couple; default DC.
             if isempty(channel)
-                channel = True;
+                channel = 'true';
             end
             if isempty(fiftyr)
-                fiftyr = False;
+                fiftyr = 'false';
             end
             if isempty(atten)
-                atten = False;
+                atten = 'false';
             end
+
             mokuctl(obj, 'set_frontend', channel, fiftyr, atten);
         end
 
@@ -145,6 +161,7 @@ classdef MokuBodeAnalyser < moku
             % 
             % :param amplitude: float; [0.0,2.0] Vpp
             % :type amplitude: Sweep amplitude
+
             mokuctl(obj, 'set_output', ch);
         end
 
@@ -184,7 +201,7 @@ classdef MokuBodeAnalyser < moku
                 sweep_points = 512;
             end
             if isempty(sweep_log)
-                sweep_log = False;
+                sweep_log = 'false';
             end
             if isempty(averaging_time)
                 averaging_time = 0.001;
@@ -198,6 +215,7 @@ classdef MokuBodeAnalyser < moku
             if isempty(settling_cycles)
                 settling_cycles = 1;
             end
+
             mokuctl(obj, 'set_sweep', f_start, f_end, sweep_points, sweep_log, averaging_time, settling_time, averaging_cycles, settling_cycles);
         end
 
@@ -207,8 +225,9 @@ classdef MokuBodeAnalyser < moku
             % :type single: bool
             % :param single: Enable single sweep (otherwise loop)
             if isempty(single)
-                single = False;
+                single = 'false';
             end
+
             mokuctl(obj, 'start_sweep', single);
         end
 
@@ -217,6 +236,7 @@ classdef MokuBodeAnalyser < moku
             % 
             % This will stop new data frames from being received, so ensure you implement a timeout
             % on :any:`get_data<pymoku.instruments.BodeAnalyser.get_data>` calls. 
+
             mokuctl(obj, 'stop_sweep');
         end
 

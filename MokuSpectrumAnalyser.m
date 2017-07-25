@@ -30,6 +30,7 @@ classdef MokuSpectrumAnalyser < moku
             %     If the `autocommit` feature has been turned off, this function can be used to manually apply any instrument
             %     settings to the Moku device. These instrument settings are those configured by calling all *set_* and *gen_* type
             %     functions. Manually calling this function allows you to atomically apply many instrument settings at once.
+
             mokuctl(obj, 'commit');
         end
 
@@ -40,6 +41,10 @@ classdef MokuSpectrumAnalyser < moku
             % 
             % :type ch: int; {1,2}
             % :param ch: Channel number to turn off (None, or leave blank, for both)firmware_is_compatible
+            if isempty(ch)
+                ch = 'nil';
+            end
+
             mokuctl(obj, 'gen_off', ch);
         end
 
@@ -61,8 +66,9 @@ classdef MokuSpectrumAnalyser < moku
             % :raises ValueError: if the channel number is invalid
             % :raises ValueOutOfRangeException: if wave parameters are out of range
             if isempty(freq)
-                freq = False;
+                freq = 'false';
             end
+
             mokuctl(obj, 'gen_sinewave', ch, amp, freq);
         end
 
@@ -71,9 +77,13 @@ classdef MokuSpectrumAnalyser < moku
             % 
             % On SpectrumAnalyser this is an alias for :any:`get_realtime_data <pymoku.instruments.SpectrumAnalyser.get_realtime_data>` as the
             % output data is never downsampled from the sweep results.
-            if isempty(wait)
-                wait = True;
+            if isempty(timeout)
+                timeout = 'nil';
             end
+            if isempty(wait)
+                wait = 'true';
+            end
+
             mokuctl(obj, 'get_data', timeout, wait);
         end
 
@@ -87,11 +97,13 @@ classdef MokuSpectrumAnalyser < moku
             %         - [0] 50 Ohm
             %         - [1] 10xAttenuation
             %         - [2] AC Coupling
+
             mokuctl(obj, 'get_frontend');
         end
 
         function get_rbw(obj)
             % :return: The current resolution bandwidth (Hz) 
+
             mokuctl(obj, 'get_rbw');
         end
 
@@ -127,9 +139,13 @@ classdef MokuSpectrumAnalyser < moku
             %         recently-applied settings, otherwise just return the most recently captured valid data.
             % 
             % :return: :any:`InstrumentData` subclass, specific to the instrument.
-            if isempty(wait)
-                wait = True;
+            if isempty(timeout)
+                timeout = 'nil';
             end
+            if isempty(wait)
+                wait = 'true';
+            end
+
             mokuctl(obj, 'get_realtime_data', timeout, wait);
         end
 
@@ -140,13 +156,15 @@ classdef MokuSpectrumAnalyser < moku
             % :type dbm: bool
             % :param dbm: Enable dBm scale
             if isempty(dbm)
-                dbm = True;
+                dbm = 'true';
             end
+
             mokuctl(obj, 'set_dbmscale', dbm);
         end
 
         function set_defaults(obj)
             % Reset the Spectrum Analyser to sane defaults. 
+
             mokuctl(obj, 'set_defaults');
         end
 
@@ -165,14 +183,15 @@ classdef MokuSpectrumAnalyser < moku
             % :type ac: bool
             % :param ac: AC-couple; default DC.
             if isempty(channel)
-                channel = True;
+                channel = 'true';
             end
             if isempty(fiftyr)
-                fiftyr = False;
+                fiftyr = 'false';
             end
             if isempty(atten)
-                atten = False;
+                atten = 'false';
             end
+
             mokuctl(obj, 'set_frontend', channel, fiftyr, atten);
         end
 
@@ -186,6 +205,10 @@ classdef MokuSpectrumAnalyser < moku
             % :param rbw: Desired resolution bandwidth (Hz), or ``None`` for auto-mode
             % 
             % :raises ValueError: if the RBW is not positive-definite or *None*
+            if isempty(rbw)
+                rbw = 'nil';
+            end
+
             mokuctl(obj, 'set_rbw', rbw);
         end
 
@@ -203,6 +226,7 @@ classdef MokuSpectrumAnalyser < moku
             % :param f2: Right-most frequency (Hz)
             % 
             % :raises InvalidConfigurationException: if the span is not positive-definite.
+
             mokuctl(obj, 'set_span', f1);
         end
 
@@ -211,6 +235,7 @@ classdef MokuSpectrumAnalyser < moku
             % 
             % :type window: string, {'blackman-harris','flattop','hanning','none'}
             % :param window: Window Function
+
             mokuctl(obj, 'set_window');
         end
 
