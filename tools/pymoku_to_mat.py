@@ -1,3 +1,9 @@
+# The tool has been written to work with Python 3 only
+import sys
+_py_vers = sys.version_info[0]
+if _py_vers != 3:
+    raise Exception("Invalid Python version '%d', expected Python 3." % _py_vers)
+
 import re
 
 from collections import namedtuple
