@@ -6,6 +6,9 @@ classdef {{ classname }} < moku
     {% for func in functions %}
     % {{ func.name }}: {{ func.docstring | firstline }}
     {% endfor %}
+    %
+    % See also  {{ functions | map(attribute='name') | join(', ') | upper}} 
+
 
     methods
         function obj = {{ classname }}(IpAddr)
