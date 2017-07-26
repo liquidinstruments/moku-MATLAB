@@ -56,7 +56,7 @@ def process_object(to_doc):
         if name.startswith('_'): continue
         if not doc: continue # If there's no docstring then it's not part of the public API
 
-        no_defs = len(args) - len(defs) - 1 # because we nuked 'self' already
+        no_defs = len(args) - len(defs)
         defs = [None] * no_defs + defs
 
         defs = list(map(translate_type, defs))

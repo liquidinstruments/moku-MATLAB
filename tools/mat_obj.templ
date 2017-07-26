@@ -18,9 +18,10 @@ classdef {{ classname }} < moku
         {% else %}
         function {{ func.name }}(obj{% if func.args | length > 0 %}, {{ func.args | map(attribute='name') | join(', ') }}{% endif %})
         {% endif%}
+            % {{ func.name | upper }}(obj{% if func.args | length > 0 %}, {{ func.args | map(attribute='name') | join(', ') }}{% endif %})
             % {{ func.docstring | replace('\n', '\n            % ') }}
             {% for arg in func.rargs %}
-            if nargin < {{ loop.revindex }} || isempty({{ arg.name }})
+            if nargin - 1 < {{ loop.revindex }} || isempty({{ arg.name }})
                 {{ arg.name }} = {{ arg.default }};
             end
             {% endfor %}
