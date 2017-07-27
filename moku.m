@@ -4,13 +4,17 @@ classdef moku
         IP
         Instrument
     end
+    
+    properties (SetAccess=public)
+        Timeout
+    end
 
     methods
         % For now you can only connect via IP address
         function obj=moku(IpAddr,Instrument)
             obj.IP = IpAddr;
             obj.Instrument = Instrument;
-            
+            obj.Timeout = 60;
             mokuctl(obj, 'deploy', obj.Instrument);
         end
 
@@ -75,7 +79,7 @@ classdef moku
             % HTTP. Then check the response for any errors.
             jsonstruct = jsonencode(rpcstruct);
             nid = nid + 1;
-            opts = weboptions('MediaType','application/json', 'Timeout', 10);
+            opts = weboptions('MediaType','application/json', 'Timeout', obj.Timeout);
             jsonresp = webwrite(['http://' obj.IP '/rpc/call'], jsonstruct, opts);
             resp = jsondecode(jsonresp);
 
