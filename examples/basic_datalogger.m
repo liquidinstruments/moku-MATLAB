@@ -1,26 +1,26 @@
 % Connect to your Moku and deploy the desired instrument
-m = moku('192.168.69.227', 'datalogger');
+m = MokuDatalogger('192.168.69.230');
 
 % Configure the instrument
 % Set the samplerate to 100 Hz
-mokuctl(m, 'set_samplerate', 100);
+m.set_samplerate(100);
 
-% Stop an existing log (if any)
-mokuctl(m, 'stop_data_log');
-mokuctl(m, 'start_data_log',{'duration',10,'use_sd','true','ch1', ...
-    'true','ch2','true','filetype','csv'});
+% Stop an existing log (if any)a
+m.stop_data_log();
+% Start a new 10-sec dual-channel CSV log to SD Card.
+m.start_data_log(10,'true','true','true','csv');
 
 % Wait for data log progress to reach 100%
 progress = 0;
 while(progress < 100)
     pause(0.5);
-    progress = mokuctl(m, 'progress_data_log');
+    progress = m.progress_data_log();
     disp("Progress " + progress + "%");
 end
 
 % Check the filename that the log was saved under
-fname = mokuctl(m, 'data_log_filename');
+fname = m.data_log_filename();
 disp("Log file completed: " + fname);
 
 % Denote that we are done with the logging session
-mokuctl(m, 'stop_data_log');
+m.stop_data_log();
