@@ -1,14 +1,17 @@
 
 classdef {{ classname }} < moku
+    % {{ classname | upper }}(IpAddr) 
     % Driver class for the Moku:{{ instrumentname }}
     %
-    % The following methods are available on this object:
-    {% for func in functions %}
-    % {{ func.name }}: {{ func.docstring | firstline }}
-    {% endfor %}
+    % {{ classname | upper }} Properties:
+    %   IP - IP address of the currently connected Moku:Lab device.
+    %   Instrument - Name of the currently running instrument.
+    %   Timeout - Command timeout period (sec)
     %
-    % See also  {{ functions | map(attribute='name') | join(', ') | upper}} 
-
+    % {{ classname | upper }} Methods:
+    {% for func in functions %}
+    %   {{ func.name }}  - {{ func.docstring | firstline }}
+    {% endfor %}
 
     methods
         function obj = {{ classname }}(IpAddr)
@@ -21,7 +24,7 @@ classdef {{ classname }} < moku
         {% else %}
         function {{ func.name }}(obj{% if func.args | length > 0 %}, {{ func.args | map(attribute='name') | join(', ') }}{% endif %})
         {% endif%}
-            % {{ func.name | upper }}(obj{% if func.args | length > 0 %}, {{ func.args | map(attribute='name') | join(', ') }}{% endif %})
+            % {{ func.name | upper }}({% if func.args | length > 0 %}{{ func.args | map(attribute='name') | join(', ') }}{% endif %})
             % {{ func.docstring | replace('\n', '\n            % ') }}
             {% for arg in func.rargs %}
             if nargin - 1 < {{ loop.revindex }} || isempty({{ arg.name }})
