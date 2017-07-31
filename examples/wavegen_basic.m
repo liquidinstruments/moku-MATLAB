@@ -1,5 +1,7 @@
+ip = input('Please enter your Moku:Lab IP address: ', 's');
+
 % Connect to your Moku and deploy the desired instrument
-m = MokuWaveformGenerator('192.168.69.230');
+m = MokuWaveformGenerator(ip);
 
 % Configure the instrument
 % Generate an output 1.0Vpp 1MHz Sinewave on Channel 1

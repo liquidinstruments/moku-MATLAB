@@ -1,5 +1,7 @@
+ip = input('Please enter your Moku:Lab IP address: ', 's');
+
 % Connect to your Moku and deploy the desired instrument
-m = MokuOscilloscope('192.168.69.230');
+m = MokuOscilloscope(ip);
 
 % Configure the instrument
 % Trigger on input Channel 1, rising edge, 0V with hysteresis ON

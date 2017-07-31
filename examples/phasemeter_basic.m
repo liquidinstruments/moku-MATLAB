@@ -1,5 +1,7 @@
+ip = input('Please enter your Moku:Lab IP address: ', 's');
+
 % Connect to your Moku and deploy the desired instrument
-m = MokuPhasemeter('192.168.69.230');
+m = MokuPhasemeter(ip);
 
 % Configure the instrument
 % Set the Channel 1 seed frequency to 10MHz and samplerate ~30Hz

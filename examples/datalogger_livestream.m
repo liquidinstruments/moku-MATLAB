@@ -1,5 +1,7 @@
+ip = input('Please enter your Moku:Lab IP address: ', 's');
+
 % Connect to your Moku and deploy the desired instrument
-m = MokuDatalogger('192.168.69.230');
+m = MokuDatalogger(ip);
 
 % Configure the instrument
 % Set the samplerate to 10 Hz

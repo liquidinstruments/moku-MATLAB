@@ -1,5 +1,7 @@
+ip = input('Please enter your Moku:Lab IP address: ', 's');
+
 % Connect to your Moku and deploy the desired instrument
-m = MokuSpectrumAnalyser('192.168.69.230');
+m = MokuSpectrumAnalyser(ip);
 
 % Configure the instrument
 % Set the frequency span from DC - 10MHz

@@ -1,5 +1,7 @@
+ip = input('Please enter your Moku:Lab IP address: ', 's');
+
 % Connect to your Moku and deploy the desired instrument
-m = MokuOscilloscope('192.168.69.230');
+m = MokuOscilloscope(ip);
 
 % Configure the instrument
 % Set the timebase to be +-1sec
