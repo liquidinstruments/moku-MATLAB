@@ -9,20 +9,57 @@ classdef moku
         Timeout
     end
 
+    methods(Static)
+        function outargs = params_to_struct(args,kwargs)
+            % This helper function concatenates name,value formatted struct 
+            % and cell arrays.
+            
+            % Convert kwargs from cell array to 
+            
+            % This helper function converts two inputs (struct and cel 
+            % This helper function converts the variable input arguments
+            % into an appropriate form for the JSON-encoder. i.e. A
+            % struct for keyword arguments, and a cell-array for
+            % positional arguments.
+            x = kwargs;
+            if isempty(x)
+                outargs = args;
+            % Assume if the first entry is a cell then the parameters
+            % were keyword arguments
+            else
+                if mod(length(x),2)
+                    error('Invalid kwargs: must be list {name,val,...} of length n*2');
+                end
+
+                % Check fields are strings
+                if ~iscellstr(x(1:2:end))
+                    error('Invalid names in name/val argument list');
+                end
+                
+                for i=1:2:(length(kwargs))
+                    args.(kwargs{1,i}) = kwargs{1,i + 1}
+                end
+                
+                outargs = args;
+            end
+        end
+    end
+    
+    
     methods
         % For now you can only connect via IP address
         function obj=moku(IpAddr,Instrument)
             obj.IP = IpAddr;
             obj.Instrument = Instrument;
             obj.Timeout = 60;
-            mokuctl(obj, 'deploy', obj.Instrument);
+            mokuctl(obj, 'deploy', struct('instrument',obj.Instrument));
         end
 
         function delete(obj)
             mokuctl(obj, 'close');
         end
 
-        function status = mokuctl(obj, action, varargin)
+        function status = mokuctl(obj, action, params)
             % Low-level instruction to control Moku:Lab. Should not be
             % called directly, use instrument-specific functions instead
             persistent nid;
@@ -33,48 +70,13 @@ classdef moku
 
             % Prepare the JSON-RPC header structure
             rpcstruct = struct('jsonrpc','2.0','method', action, 'id', nid);
-
-            function args = params_to_struct(p)
-                % This helper function converts the variable input arguments
-                % into an appropriate form for the JSON-encoder. i.e. A
-                % struct for keyword arguments, and a cell-array for
-                % positional arguments.
-                x = p;
-                if isempty(x)
-                    args = struct;
-                % Assume if the first entry is a cell then the parameters
-                % were keyword arguments
-                elseif iscell(x{1})
-                    x = x{1};
-                    % Cells can be {name,val;...} or {name,val,...}
-                    if (size(x,1) == 1) && size(x,2) > 2
-                        % Reshape {name,val, name,val, ... } list to {name,val; ... }
-                        x = reshape(x, [2 numel(x)/2])';
-                    end
-
-                    if size(x,2) ~= 2
-                        error('Invalid args: cells must be n-by-2 {name,val;...} or vector {name,val,...} list');
-                    end
-
-                    % Convert {name,val, name,val, ...} list to struct
-                    if ~iscellstr(x(:,1))
-                        error('Invalid names in name/val argument list');
-                    end
-                    % Little trick for building structs from name/vals
-                    % This protects cellstr arguments from expanding into nonscalar structs
-                    x(:,2) = num2cell(x(:,2));
-                    x = x';
-                    x = x(:);
-                    args = struct(x{:});
-                else
-                    % Positional arguments, so we keep it as a cell array
-                    args = x;
-                end
+            
+            if isempty(params)
+                rpcstruct.params = struct
+            else
+                rpcstruct.params = params
             end
-
-            % Put the arguments into an acceptable JSON format for encoding
-            rpcstruct.params = params_to_struct(varargin);
-
+            
             % Encode the RPC structure object and send it to the Moku over
             % HTTP. Then check the response for any errors.
             jsonstruct = jsonencode(rpcstruct);

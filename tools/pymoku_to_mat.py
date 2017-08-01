@@ -49,27 +49,22 @@ def process_object(to_doc):
 
     for f in funcs:
         name = f[0]
-        args = getargspec(f[1]).args[1:] # cut off self
+        inargs = getargspec(f[1]).args[1:] # cut off self
         defs = list(getargspec(f[1]).defaults or [])
         doc = getdoc(f[1])
 
         if name.startswith('_'): continue
         if not doc: continue # If there's no docstring then it's not part of the public API
 
-        no_defs = len(args) - len(defs)
-        defs = [None] * no_defs + defs
-
-        defs = list(map(translate_type, defs))
-
-        ArgPair = namedtuple('ArgPair', ['name', 'default'])
-        arg_pairs = list(map(ArgPair._make, zip(args, defs)))
+        no_defs = len(inargs) - len(defs)
+        inargs = inargs[:no_defs]
 
         returns = any(x != 'None' for x in _return_re.findall(getsource(f[1])))
 
         fspecs.append({
             'name' : name,
-            'args' : arg_pairs,
-            'rargs' : list(reversed(arg_pairs)), # works around a bug with reversing length-1 generators
+            'args' : inargs,
+            'nkwargs' : len(defs),
             'docstring' : doc,
             'return' : 'ret' if returns else '', # TODO: Maybe try and discover a sensible return variable?
         })

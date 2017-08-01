@@ -20,22 +20,24 @@ classdef {{ classname }} < moku
 
         {% for func in functions|sort(attribute='name') %}
         {% if func.return | length > 0 %}
-        function {{ func.return }} = {{ func.name }}(obj{% if func.args | length > 0 %}, {{ func.args | map(attribute='name') | join(', ') }}{% endif %})
+        function {{ func.return }} = {{ func.name }}(obj{% if func.args | length > 0 %}, {{ func.args | join(', ') }}{% endif %}{% if func.nkwargs > 0 %}, varargin{% endif %})
         {% else %}
-        function {{ func.name }}(obj{% if func.args | length > 0 %}, {{ func.args | map(attribute='name') | join(', ') }}{% endif %})
+        function {{ func.name }}(obj{% if func.args | length > 0 %}, {{ func.args | join(', ') }}{% endif %}{% if func.nkwargs > 0 %}, varargin{% endif %})
         {% endif%}
-            % {{ func.name | upper }}({% if func.args | length > 0 %}{{ func.args | map(attribute='name') | join(', ') }}{% endif %})
+            % {{ func.name | upper }}({% if func.args | length > 0 %}{{ func.args | join(', ') }}{% endif %})
+            {% if func.nkwargs > 0 %}
+            % {{ func.name | upper }}(...,param1,val1,param2,val2,...)
+            {% endif %}
             % {{ func.docstring | replace('\n', '\n            % ') }}
-            {% for arg in func.rargs %}
-            if nargin - 1 < {{ loop.revindex }} || isempty({{ arg.name }})
-                {{ arg.name }} = {{ arg.default }};
-            end
-            {% endfor %}
-
+            params = struct({% for arg in func.args %}'{{ arg }}',{{ arg }}{{"," if not loop.last }}{% endfor %});
+            {% if func.nkwargs > 0 %}
+            kwargs = varargin;
+            params = moku.params_to_struct(params, kwargs);
+            {% endif %}
             {% if func.return | length > 0 %}
             {{ func.return }} = ...
             {% endif %}
-            mokuctl(obj, '{{ func.name }}'{% if func.args | length > 0 %}, {{ func.args | map(attribute='name') | join(', ') }}{% endif %});
+            mokuctl(obj, '{{ func.name }}', params);
         end
 
         {% endfor %}
