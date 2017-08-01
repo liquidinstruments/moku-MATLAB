@@ -5,14 +5,14 @@ m = MokuOscilloscope(ip);
 
 % Configure the instrument
 % Trigger on input Channel 1, rising edge, 0V with hysteresis ON
-m.set_trigger('in1','rising',0,'true','','');
+m.set_trigger('in1','rising',0.0,'hysteresis','true')
 
 % View +- 1 second i.e. trigger in the centre
 m.set_timebase(-0.001,0.001);
 
 % Generate an output sinewave on Channel 2
 % 0.5Vpp, 10Hz, 0V offset
-m.gen_sinewave(2, 0.5, 1e3, 0);
+m.gen_sinewave(2, 0.5, 1e3, 'offset', 0);
 
 % Set the data source of Channel 1 to be Input 1
 m.set_source(1,'in');

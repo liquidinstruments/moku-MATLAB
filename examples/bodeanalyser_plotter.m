@@ -13,10 +13,12 @@ m.set_output(2,0.5); % Channel 2, 0.5Vpp
 % Logarithmic sweep ON
 % 1msec averaging time, 1msec settling time
 % 1 averaging cycle, 1 settling cycle
-m.set_sweep(1e6,100e6,512,'true',1e-3,1e-3,1,1);
+m.set_sweep('f_start', 1e6, 'f_end', 100e6, 'sweep_points', 512, ...
+    'sweep_log', 'true', 'averaging_time', 1e-3, 'settling_time', 1e-3, ...
+    'averaging_cycles', 1, 'settling_cycles', 1);
 
 % Start continuous sweeping (single sweep OFF)
-m.start_sweep('false');
+m.start_sweep('single','false');
 
 % Get initial data to set up plots
 data = m.get_data();

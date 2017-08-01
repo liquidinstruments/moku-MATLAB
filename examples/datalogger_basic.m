@@ -10,7 +10,8 @@ m.set_samplerate(100);
 % Stop an existing log (if any)a
 m.stop_data_log();
 % Start a new 10-sec dual-channel CSV log to SD Card.
-m.start_data_log(10,'true','true','true','csv');
+m.start_data_log('duration',10,'use_sd','true','ch1','true', ...
+    'ch2','true','filetype','csv');
 
 % Wait for data log progress to reach 100%
 progress = 0;

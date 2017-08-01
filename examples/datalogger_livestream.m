@@ -10,11 +10,11 @@ m.set_samplerate(10);
 % Stop any previous sessions
 m.stop_stream_data();
 % Start a 10sec dual-channel streaming session
-m.start_stream_data(10,'true','true');
+m.start_stream_data('duration',10,'ch1','true','ch2','true');
 
 while 1   
     % Get 10 samples off the network at a time
-    samples = m.get_stream_data(10);
+    samples = m.get_stream_data('n',10);
     
     % Break out of the loop if we receive an empty cell array
     % This denotes the session has completed

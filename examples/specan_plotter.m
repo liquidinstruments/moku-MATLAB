@@ -5,22 +5,22 @@ m = MokuSpectrumAnalyser(ip);
 
 % Configure the instrument
 % Set amplitude scale to dBm
-m.set_dbmscale('true');
+m.set_dbmscale('dbm','true');
 
 % Set DC - 70MHz span
-m.set_span(0,70e6);
+m.set_span(10e6,70e6);
 
 % Auto mode
-m.set_rbw('');
+m.set_rbw();
 
 % Generate swept 1.0Vpp Sinewave on Channel 1
-m.gen_sinewave(1,1.0,0,'true');
+m.gen_sinewave(1,1.0,0,'sweep','true');
 % Generate 0.5Vpp 20MHz Sinewave on Channel 2
-m.gen_sinewave(2,0.5,20e6,'false');
+m.gen_sinewave(2,0.5,20e6,'sweep','false');
 
 % Configure the ADC inputs to be 50Ohm impedance
-m.set_frontend(1, 'true');
-m.set_frontend(2, 'true');
+m.set_frontend(1,'fiftyr','true');
+m.set_frontend(2,'fiftyr','true');
 
 % Get initial data to set up plots
 data = m.get_data();
@@ -28,7 +28,7 @@ data = m.get_data();
 % Set up the plots
 figure
 lh = plot(data.frequency, data.ch1, data.frequency, data.ch2);
-xlabel(gca,'Time (sec)')
+xlabel(gca,'Frequency (Hz)')
 if data.dbm
     ylabel(gca,'Amplitude (dBm)')
 else

@@ -11,40 +11,27 @@ classdef moku
 
     methods(Static)
         function outargs = params_to_struct(args,kwargs)
-            % This helper function concatenates name,value formatted struct 
-            % and cell arrays.
-            
-            % Convert kwargs from cell array to 
-            
-            % This helper function converts two inputs (struct and cel 
-            % This helper function converts the variable input arguments
-            % into an appropriate form for the JSON-encoder. i.e. A
-            % struct for keyword arguments, and a cell-array for
-            % positional arguments.
+            % This helper function concatenates args and kwargs into a 
+            % struct where args is a struct and kwargs is a cell array of 
+            % format {name,val,...} and has length n*2.
             x = kwargs;
-            if isempty(x)
-                outargs = args;
-            % Assume if the first entry is a cell then the parameters
-            % were keyword arguments
-            else
+            outargs = args;
+            if ~isempty(x)
+                % Check kwargs is correct length
                 if mod(length(x),2)
                     error('Invalid kwargs: must be list {name,val,...} of length n*2');
                 end
-
-                % Check fields are strings
+                % Check kwargs name entries are strings
                 if ~iscellstr(x(1:2:end))
                     error('Invalid names in name/val argument list');
                 end
-                
-                for i=1:2:(length(kwargs))
-                    args.(kwargs{1,i}) = kwargs{1,i + 1}
+                % Append the kwarg names and values to the args struct
+                for i=1:2:(length(x))
+                    outargs.(x{1,i}) = x{1,i + 1};
                 end
-                
-                outargs = args;
             end
         end
     end
-    
     
     methods
         % For now you can only connect via IP address
@@ -72,9 +59,9 @@ classdef moku
             rpcstruct = struct('jsonrpc','2.0','method', action, 'id', nid);
             
             if isempty(params)
-                rpcstruct.params = struct
+                rpcstruct.params = struct;
             else
-                rpcstruct.params = params
+                rpcstruct.params = params;
             end
             
             % Encode the RPC structure object and send it to the Moku over

@@ -21,13 +21,14 @@ m.auto_acquire()
 % Stop any previous streaming sessions
 m.stop_stream_data();
 % Start a 30sec dual-channel streaming session
-m.start_stream_data(30,'true','true');
+m.start_stream_data('duration',30,'use_sd','true','ch1','true',...
+    'ch2','true');
 
 % Set up the plots
 n_plot_points = 500
 
 
-data = m.get_stream_data(10)
+data = m.get_stream_data('n',10)
 
 % figure
 % ch1 = NaN(1,n_plot_points);
