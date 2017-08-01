@@ -1,4 +1,24 @@
 classdef moku
+    % MOKU-MATLAB
+    %
+    % To run an instrument on your Moku:Lab, create an instance of the 
+    % relevant Moku* class using your device's IP address. Then, call the 
+    % desired instrument methods to command and receive data. For example:
+    %   
+    %   m = MokuOscilloscope('192.168.0.10');
+    %   m.set_timebase(-1,1);
+    %   data = m.get_realtime_data();
+    %
+    % See also
+    %   MokuBodeAnalyser
+    %   MokuDatalogger
+    %   MokuLockInAmp
+    %   MokuOscilloscope
+    %   MokuPhasemeter
+    %   MokuSpectrumAnalyser
+    %   MokuWaveformGenerator
+    %
+    % Further examples may be found at <>
 
     properties (SetAccess=private)
         IP

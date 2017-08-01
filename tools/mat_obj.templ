@@ -12,6 +12,8 @@ classdef {{ classname }} < moku
     {% for func in functions %}
     %   {{ func.name }}  - {{ func.docstring | firstline }}
     {% endfor %}
+    %
+    % See also moku
 
     methods
         function obj = {{ classname }}(IpAddr)
