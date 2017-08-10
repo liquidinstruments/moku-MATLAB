@@ -89,8 +89,7 @@ classdef moku
             jsonstruct = jsonencode(rpcstruct);
             nid = nid + 1;
             opts = weboptions('MediaType','application/json', 'Timeout', obj.Timeout);
-            jsonresp = webwrite(['http://' obj.IP '/rpc/call'], jsonstruct, opts);
-            resp = jsondecode(jsonresp);
+            resp = webwrite(['http://' obj.IP '/rpc/call'], jsonstruct, opts);
 
             if isfield(resp, 'error')
                 error(['Moku:RPC' int2str(abs(resp.error.code))],...
