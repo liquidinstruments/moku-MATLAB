@@ -1,9 +1,19 @@
+%% Plotting Spectrum Analyser Example
+% 
+%  This example demonstrates how you can configure the Spectrum Analyser 
+%  instrument and plot its spectrum data in real-time. It also shows how
+%  you can use its embedded signal generator to generate a sweep and single
+%  frequency waveform on the output channels.
+% 
+%  (c) 2017 Liquid Instruments Pty. Ltd.
+% 
+%% Connect to your Moku
 ip = input('Please enter your Moku:Lab IP address: ', 's');
 
 % Connect to your Moku and deploy the desired instrument
 m = MokuSpectrumAnalyser(ip);
 
-% Configure the instrument
+%% Configure the instrument
 % Set amplitude scale to dBm
 m.set_dbmscale('dbm','true');
 
@@ -22,24 +32,25 @@ m.gen_sinewave(2,0.5,20e6,'sweep','false');
 m.set_frontend(1,'fiftyr','true');
 m.set_frontend(2,'fiftyr','true');
 
+%% Set up plots
 % Get initial data to set up plots
 data = m.get_data();
 
 % Set up the plots
-figure
+figure;
 lh = plot(data.frequency, data.ch1, data.frequency, data.ch2);
-xlabel(gca,'Frequency (Hz)')
+axis tight;
+xlabel(gca,'Frequency (Hz)');
 if data.dbm
-    ylabel(gca,'Amplitude (dBm)')
+    ylabel(gca,'Amplitude (dBm)');
 else
-    ylabel(gca,'Amplitude (V)')
+    ylabel(gca,'Amplitude (V)');
 end
 
-% Continuously update plotted data
+%% Receive and plot new data frames
 while 1
     data = m.get_realtime_data();
     set(lh(1),'XData',data.frequency,'YData',data.ch1);
     set(lh(2),'XData',data.frequency,'YData',data.ch2);
-    axis tight
-    pause(0.1)
+    pause(0.1);
 end

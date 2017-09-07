@@ -1,9 +1,18 @@
+%% Basic Waveform Generator Example
+%
+% This example demonstrates how you can use the Waveform Generator
+% instrument to generate an amplitude modulated sinewave on Channel 1, and
+% un-modulated squarewave on Channel 2.
+%
+% (c) 2017 Liquid Instruments Pty. Ltd.
+%
+%% Connect to your Moku
 ip = input('Please enter your Moku:Lab IP address: ', 's');
 
 % Connect to your Moku and deploy the desired instrument
 m = MokuWaveformGenerator(ip);
 
-% Configure the instrument
+%% Configure the instrument
 % Generate an output 1.0Vpp 1MHz Sinewave on Channel 1
 m.gen_sinewave(1, 1.0, 1e6);
 

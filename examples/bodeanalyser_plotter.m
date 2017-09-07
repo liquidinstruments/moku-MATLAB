@@ -1,9 +1,17 @@
+%% Plotting Bode Analyser Example
+%
+% This example demonstrates how you can generate output sweeps using the
+% Bode Analyser instrument, and view transfer function data in real-time.
+%
+% (c) 2017 Liquid Instruments Pty. Ltd.
+%
+%% Connect to your Moku
 ip = input('Please enter your Moku:Lab IP address: ', 's');
 
 % Connect to your Moku and deploy the desired instrument
 m = MokuBodeAnalyser(ip);
 
-% Configure the instrument
+%% Configure the instrument
 % Set output sweep amplitudes
 m.set_output(1,0.5); % Channel 1, 0.5Vpp
 m.set_output(2,0.5); % Channel 2, 0.5Vpp
@@ -20,6 +28,7 @@ m.set_sweep('f_start', 1e6, 'f_end', 100e6, 'sweep_points', 512, ...
 % Start continuous sweeping (single sweep OFF)
 m.start_sweep('single','false');
 
+%% Set up plots
 % Get initial data to set up plots
 data = m.get_data();
 
@@ -36,7 +45,7 @@ ps = semilogx(phase_graph, data.frequency, data.ch1.phase, data.frequency, data.
 xlabel(phase_graph,'Frequency (Hz)')
 ylabel(phase_graph,'Phase (cyc)')
 
-% Continuously updated plotted data
+%% Receive and plot new data frames
 while 1
     data = m.get_data();
     set(ms(1),'XData',data.frequency,'YData',data.ch1.magnitude_dB);

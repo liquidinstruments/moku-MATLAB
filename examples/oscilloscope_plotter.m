@@ -1,9 +1,17 @@
+%% Plotting Oscilloscope Example
+% 
+%  This example demonstrates how you can configure the Oscilloscope instrument,
+%  and view triggered time-voltage data frames in real-time. 
+% 
+%  (c) 2017 Liquid Instruments Pty. Ltd.
+%
+%% Connect to your Moku
 ip = input('Please enter your Moku:Lab IP address: ', 's');
 
 % Connect to your Moku and deploy the desired instrument
 m = MokuOscilloscope(ip);
 
-% Configure the instrument
+%% Configure the instrument
 % Trigger on input Channel 1, rising edge, 0V with hysteresis ON
 m.set_trigger('in1','rising',0.0,'hysteresis','true')
 
@@ -20,6 +28,7 @@ m.set_source(1,'in');
 % Set the data source of Channel 2 to the generated output sinewave
 m.set_source(2,'out');
 
+%% Set up plots
 % Get initial data to set up plots
 data = m.get_realtime_data();
 
@@ -29,7 +38,7 @@ lh = plot(data.time, data.ch1, data.time, data.ch2);
 xlabel(gca,'Time (sec)')
 ylabel(gca,'Amplitude (V)')
 
-% Continuously update plotted data
+%% Receive and plot new data frames
 while 1
     data = m.get_realtime_data();
     set(lh(1),'XData',data.time,'YData',data.ch1);
