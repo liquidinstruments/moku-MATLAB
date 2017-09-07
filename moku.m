@@ -86,16 +86,18 @@ classdef moku
             
             % Encode the RPC structure object and send it to the Moku over
             % HTTP. Then check the response for any errors.
-            jsonstruct = jsonencode(rpcstruct);
+            jsonstruct = savejson('', rpcstruct);
             nid = nid + 1;
-            opts = weboptions('MediaType','application/json', 'Timeout', obj.Timeout);
-            resp = webwrite(['http://' obj.IP '/rpc/call'], jsonstruct, opts);
+            resp = urlread2(['http://' obj.IP '/rpc/call'], 'Post',...
+                jsonstruct, struct('name','Content-Type','value',...
+                'application/json'));
+            data = loadjson(resp);
 
-            if isfield(resp, 'error')
-                error(['Moku:RPC' int2str(abs(resp.error.code))],...
-                    resp.error.message);
+            if isfield(data, 'error')
+                error(['Moku:RPC' int2str(abs(data.error.code))],...
+                    data.error.message);
             end
-            status = resp.result;
+            status = data.result;
         end
     end
 end
