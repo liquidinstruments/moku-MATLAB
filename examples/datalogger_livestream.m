@@ -29,11 +29,11 @@ while 1
     % Break out of the loop if we receive an empty cell array
     % This denotes the session has completed (works for dual-channel only)
     if iscell(samples)
-        disp("Stream complete");
+        disp('Stream complete');
         break
     end
 
-    disp(sprintf("Received: Channel 1 (%d smps), Channel 2 (%d smps)", ...
+    disp(sprintf('Received: Channel 1 (%d smps), Channel 2 (%d smps)', ...
         length(samples(1,:)), length(samples(2,:))));
     % A short pause ensures this message will print with each loop
     pause(0.1);

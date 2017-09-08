@@ -33,12 +33,12 @@ progress = 0;
 while(progress < 100)
     pause(1);
     progress = m.progress_data_log();
-    disp("Progress " + progress + "%");
+    disp(['Progress ' num2str(progress) '%']);
 end
 
 % Check the filename that the log was saved under
 fname = m.data_log_filename();
-disp("Log file completed: " + fname);
+disp(['Log file completed: ' fname]);
 
 %% Close the logging session
 % Denote that we are done with the logging session

@@ -77,7 +77,7 @@ while 1
     % Break out of the loop if we receive empty arrays
     % This denotes the session has completed
     if isempty(samples_ch1) || isempty(samples_ch2)
-        disp("Stream complete")
+        disp('Stream complete')
         break
     end
     
