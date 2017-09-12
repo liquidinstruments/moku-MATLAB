@@ -23,10 +23,9 @@ m.set_samplerate('slow');
 m.gen_sinewave(1, 0.5, 5e6);
 m.gen_sinewave(2, 1.0, 10e6);
 
-% Restart the phase-lock loop for both channels, and automatically
-% resolve the starting frequency (as opposed to manually setting a seed
-% frequency)
-m.auto_acquire()
+% Set the phase-tracking frequency of both channels
+m.set_initfreq(1,5e6);
+m.set_initfreq(2,10e6);
 
 %% Start network-streaming data
 % Stop any previous streaming sessions
