@@ -19,7 +19,11 @@ classdef moku
     %   MokuWaveformGenerator
     %
     % Further examples may be found at <>
-
+    properties (Constant)
+        version = "2.2.0";
+        compatibility = "2.2";
+    end
+    
     properties (SetAccess=private)
         IP
         Instrument
@@ -59,11 +63,22 @@ classdef moku
             obj.IP = IpAddr;
             obj.Instrument = Instrument;
             obj.Timeout = 60;
+            % Check compatibility of moku-MATLAB with pymoku-RPC
+           	if ~obj.check_compatibility()
+               error(['Moku:Lab pymoku version (v' char(obj.version()) ') is incompatible with current moku-MATLAB version (v' char(obj.version) ').']);
+            end
             mokuctl(obj, 'deploy', struct('instrument',obj.Instrument));
         end
 
         function delete(obj)
             mokuctl(obj, 'close');
+        end
+        
+        function compatible = check_compatibility(obj)
+            py_vers = obj.version().split(".");
+            split_vers = obj.compatibility.split(".");
+            % Compatible if the major, minor version numbers match
+           	compatible = all(py_vers(1:2)==split_vers(1:2));
         end
 
         function status = mokuctl(obj, action, params)
