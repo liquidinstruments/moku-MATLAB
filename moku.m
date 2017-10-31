@@ -10,12 +10,15 @@ classdef moku
     %   data = m.get_realtime_data();
     %
     % See also
-    %   MokuBodeAnalyser
+    %   MokuArbitraryWaveGen
+    %   MokuBodeAnalyzer
     %   MokuDatalogger
+    %   MokuIIRFilterBox
     %   MokuLockInAmp
     %   MokuOscilloscope
     %   MokuPhasemeter
-    %   MokuSpectrumAnalyser
+    %   MokuPIDController
+    %   MokuSpectrumAnalyzer
     %   MokuWaveformGenerator
     %
     % Further examples may be found at <>
