@@ -1,6 +1,6 @@
-%% Basic Spectrum Analyser
+%% Basic Spectrum Analyzer
 %
-% This example demonstrates how you can use the Spectrum Analyser instrument
+% This example demonstrates how you can use the Spectrum Analyzer instrument
 % to retrieve a single spectrum data frame over a set frequency span.
 %
 % (c) 2017 Liquid Instruments Pty. Ltd.
@@ -9,7 +9,7 @@
 ip = input('Please enter your Moku:Lab IP address: ', 's');
 
 % Connect to your Moku and deploy the desired instrument
-m = MokuSpectrumAnalyser(ip);
+m = MokuSpectrumAnalyzer(ip);
 
 %% Configure the instrument
 % Set the frequency span from DC - 10MHz

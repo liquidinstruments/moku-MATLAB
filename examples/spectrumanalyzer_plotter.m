@@ -1,6 +1,6 @@
-%% Plotting Spectrum Analyser Example
+%% Plotting Spectrum Analyzer Example
 % 
-%  This example demonstrates how you can configure the Spectrum Analyser 
+%  This example demonstrates how you can configure the Spectrum Analyzer 
 %  instrument and plot its spectrum data in real-time. It also shows how
 %  you can use its embedded signal generator to generate a sweep and single
 %  frequency waveform on the output channels.
@@ -11,7 +11,7 @@
 ip = input('Please enter your Moku:Lab IP address: ', 's');
 
 % Connect to your Moku and deploy the desired instrument
-m = MokuSpectrumAnalyser(ip);
+m = MokuSpectrumAnalyzer(ip);
 
 %% Configure the instrument
 % Set amplitude scale to dBm

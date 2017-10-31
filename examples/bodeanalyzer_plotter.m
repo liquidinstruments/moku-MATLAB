@@ -1,7 +1,7 @@
-%% Plotting Bode Analyser Example
+%% Plotting Bode Analyzer Example
 %
 % This example demonstrates how you can generate output sweeps using the
-% Bode Analyser instrument, and view transfer function data in real-time.
+% Bode Analyzer instrument, and view transfer function data in real-time.
 %
 % (c) 2017 Liquid Instruments Pty. Ltd.
 %
@@ -9,7 +9,7 @@
 ip = input('Please enter your Moku:Lab IP address: ', 's');
 
 % Connect to your Moku and deploy the desired instrument
-m = MokuBodeAnalyser(ip);
+m = MokuBodeAnalyzer(ip);
 
 %% Configure the instrument
 % Set output sweep amplitudes

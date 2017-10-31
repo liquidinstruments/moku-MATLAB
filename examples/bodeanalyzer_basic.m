@@ -1,7 +1,7 @@
-%% Basic Bode Analyser Example
+%% Basic Bode Analyzer Example
 %
 % This example demonstrates how you can generate a single output sweep on
-% the Bode Analyser instrument, and print the resulting transfer function
+% the Bode Analyzer instrument, and print the resulting transfer function
 % data.
 %
 % (c) Liquid Instruments Pty. Ltd.
@@ -10,7 +10,7 @@
 ip = input('Please enter your Moku:Lab IP address: ', 's');
 
 % Connect to your Moku and deploy the desired instrument
-m = MokuBodeAnalyser(ip);
+m = MokuBodeAnalyzer(ip);
 
 %% Configure the instrument
 % Set the output sweep parameters and amplitudes

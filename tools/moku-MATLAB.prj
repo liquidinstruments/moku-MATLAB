@@ -36,7 +36,8 @@
 .git
 .gitignore
 examples
-tools</param.exclude.filters>
+tools
+data/empty</param.exclude.filters>
     <param.examples />
     <param.demosxml />
     <param.apps />
@@ -63,13 +64,19 @@ tools</param.exclude.filters>
       <file>/home/shanae/Documents/repo/moku-MATLAB</file>
     </fileset.rootdir>
     <fileset.rootfiles>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuBodeAnalyser.m</file>
+      <file>/home/shanae/Documents/repo/moku-MATLAB/LICENSE</file>
+      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuArbitraryWaveGen.m</file>
+      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuBodeAnalyzer.m</file>
       <file>/home/shanae/Documents/repo/moku-MATLAB/MokuDatalogger.m</file>
+      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuIIRFilterBox.m</file>
       <file>/home/shanae/Documents/repo/moku-MATLAB/MokuLockInAmp.m</file>
       <file>/home/shanae/Documents/repo/moku-MATLAB/MokuOscilloscope.m</file>
+      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuPIDController.m</file>
       <file>/home/shanae/Documents/repo/moku-MATLAB/MokuPhasemeter.m</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuSpectrumAnalyser.m</file>
+      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuSpectrumAnalyzer.m</file>
       <file>/home/shanae/Documents/repo/moku-MATLAB/MokuWaveformGenerator.m</file>
+      <file>/home/shanae/Documents/repo/moku-MATLAB/README.md</file>
+      <file>/home/shanae/Documents/repo/moku-MATLAB/data</file>
       <file>/home/shanae/Documents/repo/moku-MATLAB/moku.m</file>
       <file>/home/shanae/Documents/repo/moku-MATLAB/private</file>
     </fileset.rootfiles>
@@ -118,7 +125,7 @@ tools</param.exclude.filters>
       <vista>false</vista>
       <linux>true</linux>
       <solaris>false</solaris>
-      <osver>4.4.0-93-generic</osver>
+      <osver>4.4.0-97-generic</osver>
       <os32>false</os32>
       <os64>true</os64>
       <arch>glnxa64</arch>

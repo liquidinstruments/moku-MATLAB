@@ -63,14 +63,17 @@ classdef moku
     methods
         % For now you can only connect via IP address
         function obj=moku(IpAddr,Instrument)
-            obj.IP = IpAddr;
+            obj.IP = char(IpAddr);
             obj.Instrument = Instrument;
             obj.Timeout = 60;
             % Check compatibility of moku-MATLAB with pymoku-RPC
            	if ~obj.check_compatibility()
-               error(['Moku:Lab pymoku version (v' char(obj.version()) ') is incompatible with current moku-MATLAB version (v' char(obj.version) ').']);
+               error(['Moku:Lab pymoku version (v' char(obj.version()) ... 
+                   ') is incompatible with current moku-MATLAB version (v' ...
+                   char(obj.version) ').']);
             end
-            obj.load_bitstream(Instrument)
+            % Loads the instrument bitstreams
+            obj.load_instrument_resources(Instrument)
             mokuctl(obj, 'deploy', struct('instrument',obj.Instrument));
         end
 
@@ -78,18 +81,40 @@ classdef moku
             mokuctl(obj, 'close');
         end
         
-        function load_bitstream(obj,Instrument)
-            %from, to = mokuctl(obj, 'get_bitstream_name', ... 
-            %    struct('instrument',obj.Instrument));
-            from = '10.015.000';
-            to = '015.000';
-            % Read the file contents
-            fh = fopen(['data/' from]);
-            data = fread(fh,inf,'*uint8')';
-            fclose(fh);
+        function load_instrument_resources(obj,Instrument)
+            % This helper function loads all relevant instrument resources
+            % to the Moku:Lab's remote resource folder.
             
-            % Put the bitstream
-            resp = urlread2(['http://' obj.IP '/instr/' to], 'Put', data);
+            % Get the list of all resources for the given instrument
+            resource_list = mokuctl(obj, 'resource_name', ... 
+                struct('instr_name',obj.Instrument));
+            
+            % Read each local resource file and transfer to the Moku:Lab
+            % remote resource folder.
+            for m = 1:length(resource_list)
+                local_rsc_name = char(resource_list{m}(1));
+                remote_rsc_name = char(resource_list{m}(2));
+                
+                local_rsc_loc = ['data/' local_rsc_name];
+                remote_rsc_loc = ['http://' obj.IP '/instr/' remote_rsc_name];
+                
+                % Transfer the resource file to remote folder
+                if exist(local_rsc_loc) == 2
+                    fh = fopen(local_rsc_loc);
+                    data = fread(fh,inf,'*uint8')';
+                    fclose(fh);
+
+                    [resp,extras] = urlread2(remote_rsc_loc, 'Put', data);
+                    if ~extras.isGood
+                        error(['Failed to transfer resource file: ' ...
+                            local_rsc_loc ' => ' remote_rsc_loc ...
+                            '. Server response: ' resp]);
+                    end
+                else
+                    error(['Unable to locate resource: ' local_rsc_name])
+                end
+                
+            end
         end
         
         function compatible = check_compatibility(obj)
