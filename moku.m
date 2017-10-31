@@ -70,11 +70,26 @@ classdef moku
            	if ~obj.check_compatibility()
                error(['Moku:Lab pymoku version (v' char(obj.version()) ') is incompatible with current moku-MATLAB version (v' char(obj.version) ').']);
             end
+            obj.load_bitstream(Instrument)
             mokuctl(obj, 'deploy', struct('instrument',obj.Instrument));
         end
 
         function delete(obj)
             mokuctl(obj, 'close');
+        end
+        
+        function load_bitstream(obj,Instrument)
+            %from, to = mokuctl(obj, 'get_bitstream_name', ... 
+            %    struct('instrument',obj.Instrument));
+            from = '10.015.000';
+            to = '015.000';
+            % Read the file contents
+            fh = fopen(['data/' from]);
+            data = fread(fh,inf,'*uint8')';
+            fclose(fh);
+            
+            % Put the bitstream
+            resp = urlread2(['http://' obj.IP '/instr/' to], 'Put', data);
         end
         
         function compatible = check_compatibility(obj)
