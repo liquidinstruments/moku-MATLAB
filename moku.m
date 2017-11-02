@@ -24,10 +24,10 @@ classdef moku
     % Further examples may be found at <>
     properties (Constant)
         version = "2.2.0";
-        compatibility = "2.2";
+        compatibility = ["2.2","2.1"]; % List of compatible pymoku versions
     end
     
-    properties (SetAccess=private)
+    properties (SetAccess=immutable)
         IP
         Instrument
     end
@@ -36,7 +36,7 @@ classdef moku
         Timeout
     end
 
-    methods(Static)
+    methods(Static, Hidden = true, Access = protected)
         function outargs = params_to_struct(args,kwargs)
             % This helper function concatenates args and kwargs into a 
             % struct where args is a struct and kwargs is a cell array of 
@@ -67,8 +67,9 @@ classdef moku
             obj.Instrument = Instrument;
             obj.Timeout = 60;
             % Check compatibility of moku-MATLAB with pymoku-RPC
-           	if ~obj.check_compatibility()
-               error(['Moku:Lab pymoku version (v' char(obj.version()) ... 
+            [compat, py_vers] = obj.check_compatibility();
+           	if ~compat
+               error(['Moku:Lab pymoku version (v' char(py_vers) ... 
                    ') is incompatible with current moku-MATLAB version (v' ...
                    char(obj.version) ').']);
             end
@@ -80,7 +81,43 @@ classdef moku
         function delete(obj)
             mokuctl(obj, 'close');
         end
-        
+
+        function status = mokuctl(obj, action, params)
+            % Low-level instruction to control Moku:Lab. Should not be
+            % called directly, use instrument-specific functions instead
+            persistent nid;
+
+            if isempty(nid)
+                nid = 1;
+            end
+
+            % Prepare the JSON-RPC header structure
+            rpcstruct = struct('jsonrpc','2.0','method', action, 'id', nid);
+            
+            if isempty(params)
+                rpcstruct.params = struct;
+            else
+                rpcstruct.params = params;
+            end
+            
+            % Encode the RPC structure object and send it to the Moku over
+            % HTTP. Then check the response for any errors.
+            jsonstruct = savejson('', rpcstruct);
+            nid = nid + 1;
+            resp = urlread2(['http://' obj.IP '/rpc/call'], 'Post',...
+                jsonstruct, struct('name','Content-Type','value',...
+                'application/json'));
+            data = loadjson(resp);
+
+            if isfield(data, 'error')
+                error(['Moku:RPC' int2str(abs(data.error.code))],...
+                    data.error.message);
+            end
+            status = data.result;
+        end
+    end
+    
+    methods (Access = private, Hidden = true)
         function load_instrument_resources(obj,Instrument)
             % This helper function loads all relevant instrument resources
             % to the Moku:Lab's remote resource folder.
@@ -117,45 +154,22 @@ classdef moku
             end
         end
         
-        function compatible = check_compatibility(obj)
-            py_vers = obj.version().split(".");
-            split_vers = obj.compatibility.split(".");
-            % Compatible if the major, minor version numbers match
-           	compatible = all(py_vers(1:2)==split_vers(1:2));
-        end
+        function [compatible, pymoku_version] = check_compatibility(obj)
+            % Get the remote pymoku version
+            pymoku_version = string(mokuctl(obj, 'version', []));
 
-        function status = mokuctl(obj, action, params)
-            % Low-level instruction to control Moku:Lab. Should not be
-            % called directly, use instrument-specific functions instead
-            persistent nid;
-
-            if isempty(nid)
-                nid = 1;
-            end
-
-            % Prepare the JSON-RPC header structure
-            rpcstruct = struct('jsonrpc','2.0','method', action, 'id', nid);
-            
-            if isempty(params)
-                rpcstruct.params = struct;
-            else
-                rpcstruct.params = params;
-            end
-            
-            % Encode the RPC structure object and send it to the Moku over
-            % HTTP. Then check the response for any errors.
-            jsonstruct = savejson('', rpcstruct);
-            nid = nid + 1;
-            resp = urlread2(['http://' obj.IP '/rpc/call'], 'Post',...
-                jsonstruct, struct('name','Content-Type','value',...
-                'application/json'));
-            data = loadjson(resp);
-
-            if isfield(data, 'error')
-                error(['Moku:RPC' int2str(abs(data.error.code))],...
-                    data.error.message);
-            end
-            status = data.result;
+            % Check for at least one match in the compatibility list
+            compatible = false;
+            for v = 1:length(obj.compatibility)
+                % Compatible if the major, minor numbers match
+                mat_maj_min = obj.compatibility(v).split(".")
+                %mat_maj_min = mat_vers.split(".");
+                py_maj_min = pymoku_version.split(".");
+                if all(mat_maj_min(1:2)==py_maj_min(1:2))
+                    compatible = true;
+                    break
+                end
+            end 
         end
     end
 end
