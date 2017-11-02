@@ -162,8 +162,7 @@ classdef moku
             compatible = false;
             for v = 1:length(obj.compatibility)
                 % Compatible if the major, minor numbers match
-                mat_maj_min = obj.compatibility(v).split(".")
-                %mat_maj_min = mat_vers.split(".");
+                mat_maj_min = obj.compatibility(v).split(".");
                 py_maj_min = pymoku_version.split(".");
                 if all(mat_maj_min(1:2)==py_maj_min(1:2))
                     compatible = true;
