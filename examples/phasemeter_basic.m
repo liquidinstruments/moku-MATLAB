@@ -4,7 +4,7 @@
 % and log single-channel phase and [I,Q] data to a CSV file for a 10 
 % second duration.
 %
-%  (c) 2017 Liquid Instruments Pty. Ltd.
+% (c) 2017 Liquid Instruments Pty. Ltd.
 %
 %% Connect to your Moku
 ip = input('Please enter your Moku:Lab IP address: ', 's');
