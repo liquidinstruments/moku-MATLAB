@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration file="/home/shanae/Documents/repo/moku-MATLAB/tools/moku-MATLAB.prj" location="/home/shanae/Documents/repo/moku-MATLAB/tools" name="moku-MATLAB" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="55610463" file="/home/shanae/Documents/repo/moku-MATLAB/tools/moku-MATLAB.prj" location="/home/shanae/Documents/repo/moku-MATLAB/tools" name="moku-MATLAB" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>moku-MATLAB</param.appname>
     <param.authnamewatermark>Shanae King</param.authnamewatermark>
     <param.email>shanae@liquidinstruments.com</param.email>
@@ -7,7 +7,7 @@
     <param.summary>A MATLAB interface to the Moku:Lab all-in-one test and measurement device.</param.summary>
     <param.description />
     <param.screenshot />
-    <param.version>1.0</param.version>
+    <param.version>2.2</param.version>
     <param.output>${PROJECT_ROOT}/moku-MATLAB.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -47,7 +47,6 @@ data/empty</param.exclude.filters>
     <unset>
       <param.description />
       <param.screenshot />
-      <param.version />
       <param.output />
       <param.products.name />
       <param.products.id />
