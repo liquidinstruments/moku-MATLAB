@@ -35,5 +35,5 @@ m.write_lut(2, square_wave);
 % Normally interpolation is a good idea, but for sharp edges like square
 % waves it will improve jitter but reduce rise-time. Configure whatever's
 % suitable for your application.
-m.gen_waveform(1, 1e-6, 0, 1.0, 'interpolation','true');
-m.gen_waveform(2, 1e-6, 0, 1.0, 'interpolation','true');
+m.gen_waveform(1, 1e-6, 1.0, 'interpolation','true');
+m.gen_waveform(2, 1e-6, 1.0, 'interpolation','true');

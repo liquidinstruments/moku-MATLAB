@@ -16,15 +16,14 @@ Wp = 0.5; % Cutoff frequency (% Nyquist sample rate)
 % transform the filter transfer function coefficients to SOS format.
 [sos,g] = tf2sos(B,A);
 
-% Mould the coefficients into the Moku:Lab "matrix" format. This is
-% required to be a cell array with a single cell containing the "matrix". 
+% Mould the coefficients into the Moku:Lab "matrix" format. 
 % Ensure "g" is a cell (not a single-element array). The remaining elements
 % are 1x6 numeric arrays. 
-filt_coeff = {{ {g},                ... % Overall gain
+filt_coeff = { {g},                ... % Overall gain
                 sos(1,[4,1:3,5,6]), ... % [s_1, b_01, b_11, b_21, a_11, a_21]
                 sos(2,[4,1:3,5,6]), ... % [s_2, b_02, b_12, b_22, a_12, a_22]
                 [1,1,0,0,0,0],      ... % Ignore this stage (all-pass)
-                [1,1,0,0,0,0]       }}; % Ignore this stage (all-pass)
+                [1,1,0,0,0,0]       }; % Ignore this stage (all-pass)
 
 %% Connect to your Moku
 ip = input('Please enter your Moku:Lab IP address: ', 's');
@@ -39,8 +38,8 @@ m.set_frontend(2, 'fiftyr', 'true', 'atten', 'false', 'ac', 'false');
 % Both filters have the same coefficients, but the different sampling rates
 % mean the resultant transfer functions will be different by a factor of
 % 128 (the ratio of sampling rates).
-m.set_filter(1, 'high', filt_coeff); % ~15.625 Smp/s
-m.set_filter(2, 'low', filt_coeff);  % ~122 Smp/s
+m.set_filter(1, 'high', 'filter_coefficients', filt_coeff); % ~15.625 Smp/s
+m.set_filter(2, 'low', 'filter_coefficients', filt_coeff);  % ~122 Smp/s
 
 % Channel 1 solely filters Input 1
 % Channel 2 solely filters Input 2
