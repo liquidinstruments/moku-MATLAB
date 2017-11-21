@@ -68,8 +68,11 @@ classdef moku
             obj.Timeout = 60;
             % Check compatibility of moku-MATLAB with pymoku-RPC
             [compat, py_vers] = obj.check_compatibility();
-           	if ~compat
-               error(['Moku:Lab pymoku version (v' char(py_vers) ... 
+            if ~isstring(py_vers) & isnan(py_vers)
+                error(['Moku:Lab pymoku version too old for moku-MATLAB' ...
+                    ' v' char(obj.version) '. Update Moku:Lab firmware.']);
+            elseif ~compat
+                error(['Moku:Lab pymoku version (v' char(py_vers) ... 
                    ') is incompatible with current moku-MATLAB version (v' ...
                    char(obj.version) ').']);
             end
@@ -155,11 +158,16 @@ classdef moku
         end
         
         function [compatible, pymoku_version] = check_compatibility(obj)
-            % Get the remote pymoku version
-            pymoku_version = string(mokuctl(obj, 'version', []));
+            compatible = false;
+            try
+                % Get the remote pymoku version
+                pymoku_version = string(mokuctl(obj, 'version', []));
+            catch
+                pymoku_version = NaN;
+                return
+            end
 
             % Check for at least one match in the compatibility list
-            compatible = false;
             for v = 1:length(obj.compatibility)
                 % Compatible if the major, minor numbers match
                 mat_maj_min = obj.compatibility(v).split(".");
