@@ -23,8 +23,8 @@ classdef moku
     %
     % Further examples may be found at <>
     properties (Constant)
-        version = "2.2.0";
-        compatibility = ["2.2","2.1"]; % List of compatible pymoku versions
+        version = '2.2.0';
+        compatibility = {'2.2','2.1'}; % List of compatible pymoku versions
     end
     
     properties (SetAccess=immutable)
@@ -68,7 +68,7 @@ classdef moku
             obj.Timeout = 60;
             % Check compatibility of moku-MATLAB with pymoku-RPC
             [compat, py_vers] = obj.check_compatibility();
-            if ~isstring(py_vers) & isnan(py_vers)
+            if any(isnan(py_vers))
                 error(['Moku:Lab pymoku version too old for moku-MATLAB' ...
                     ' v' char(obj.version) '. Update Moku:Lab firmware.']);
             elseif ~compat
@@ -161,7 +161,7 @@ classdef moku
             compatible = false;
             try
                 % Get the remote pymoku version
-                pymoku_version = string(mokuctl(obj, 'version', []));
+                pymoku_version = char(mokuctl(obj, 'version', []));
             catch
                 pymoku_version = NaN;
                 return
@@ -170,9 +170,10 @@ classdef moku
             % Check for at least one match in the compatibility list
             for v = 1:length(obj.compatibility)
                 % Compatible if the major, minor numbers match
-                mat_maj_min = obj.compatibility(v).split(".");
-                py_maj_min = pymoku_version.split(".");
-                if all(mat_maj_min(1:2)==py_maj_min(1:2))
+                mat_maj_min = strsplit(obj.compatibility{v},'.');
+                py_maj_min = strsplit(pymoku_version, '.');
+                if (mat_maj_min{1} == py_maj_min{1}) & ...
+                        (mat_maj_min{2} == py_maj_min{2})
                     compatible = true;
                     break
                 end
