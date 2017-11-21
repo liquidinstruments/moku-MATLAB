@@ -132,7 +132,7 @@ classdef moku
                 local_rsc_name = char(resource_list{m}(1));
                 remote_rsc_name = char(resource_list{m}(2));
                 
-                local_rsc_loc = ['data/' local_rsc_name];
+                local_rsc_loc = ['data' filesep local_rsc_name];
                 remote_rsc_loc = ['http://' obj.IP '/instr/' remote_rsc_name];
                 
                 % Transfer the resource file to remote folder
