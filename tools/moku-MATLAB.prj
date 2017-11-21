@@ -1,8 +1,8 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
   <configuration build-checksum="55610463" file="/home/shanae/Documents/repo/moku-MATLAB/tools/moku-MATLAB.prj" location="/home/shanae/Documents/repo/moku-MATLAB/tools" name="moku-MATLAB" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>moku-MATLAB</param.appname>
-    <param.authnamewatermark>Shanae King</param.authnamewatermark>
-    <param.email>shanae@liquidinstruments.com</param.email>
+    <param.authnamewatermark>Liquid Instruments</param.authnamewatermark>
+    <param.email>support@liquidinstruments.com</param.email>
     <param.company>Liquid Instruments</param.company>
     <param.summary>A MATLAB interface to the Moku:Lab all-in-one test and measurement device.</param.summary>
     <param.description />
