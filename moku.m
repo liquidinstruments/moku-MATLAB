@@ -21,7 +21,8 @@ classdef moku
     %   MokuSpectrumAnalyzer
     %   MokuWaveformGenerator
     %
-    % Further examples may be found at <>
+    % Further examples may be found <a href="matlab:
+    % web('anaconda.org/liquidinstruments/matlab-examples/files')">here</a>.
     properties (Constant)
         version = '2.2.0';
         compatibility = {'2.2','2.1'}; % List of compatible pymoku versions
