@@ -4,6 +4,10 @@
 % coefficients to configure the IIR Filter Box. It also shows how to
 % retrieve signal monitor data.
 %
+% NOTE: This example requires installation of the MATLAB Signal Processing 
+%       Toolbox to generate filter coefficients. The MokuIIRFilterBox can 
+%       be used directly with pre-defined coefficients.
+%
 % (c) 2017 Liquid Instruments Pty. Ltd.
 %
 %% Prepare the SOS filter coefficients

@@ -4,6 +4,10 @@
 % with custom generated filter coefficients, and set up real-time 
 % monitoring of the input and output signals.
 %
+% NOTE: This example requires installation of the MATLAB Signal Processing 
+%       Toolbox to generate filter coefficients. The MokuIIRFilterBox can 
+%       be used directly with pre-defined coefficients.
+%
 % (c) 2017 Liquid Instruments Pty. Ltd.
 %
 %% Prepare the SOS filter coefficients

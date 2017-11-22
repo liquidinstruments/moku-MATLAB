@@ -23,18 +23,17 @@ classdef moku
     %
     % Further examples may be found <a href="matlab:
     % web('anaconda.org/liquidinstruments/matlab-examples/files')">here</a>.
-    properties (Constant)
-        version = '2.2.0';
+    properties (Constant, Access=private)
         compatibility = {'2.2','2.1'}; % List of compatible pymoku versions
+    end
+    
+    properties (Constant)
+       version = '2.2.0'; 
     end
     
     properties (SetAccess=immutable)
         IP
         Instrument
-    end
-    
-    properties (SetAccess=public)
-        Timeout
     end
 
     methods(Static, Hidden = true, Access = protected)
@@ -66,7 +65,7 @@ classdef moku
         function obj=moku(IpAddr,Instrument)
             obj.IP = char(IpAddr);
             obj.Instrument = Instrument;
-            obj.Timeout = 60;
+  
             % Check compatibility of moku-MATLAB with pymoku-RPC
             [compat, py_vers] = obj.check_compatibility();
             if any(isnan(py_vers))
