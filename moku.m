@@ -77,7 +77,7 @@ classdef moku
                    char(obj.version) ').']);
             end
             % Loads the instrument bitstreams
-            obj.load_instrument_resources(Instrument)
+            obj.load_instrument_resources(Instrument);
             mokuctl(obj, 'deploy', struct('instrument',obj.Instrument));
         end
 
@@ -105,8 +105,7 @@ classdef moku
             
             % Encode the RPC structure object and send it to the Moku over
             % HTTP. Then check the response for any errors.
-            jsonstruct = savejson('', rpcstruct,'opt', ...
-                struct('ParseLogical',1));
+            jsonstruct = savejson('', rpcstruct, struct('ParseLogical',1));
             nid = nid + 1;
             resp = urlread2(['http://' obj.IP '/rpc/call'], 'Post',...
                 jsonstruct, struct('name','Content-Type','value',...
