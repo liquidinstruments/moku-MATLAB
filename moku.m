@@ -105,7 +105,8 @@ classdef moku
             
             % Encode the RPC structure object and send it to the Moku over
             % HTTP. Then check the response for any errors.
-            jsonstruct = savejson('', rpcstruct);
+            jsonstruct = savejson('', rpcstruct,'opt', ...
+                struct('ParseLogical',1));
             nid = nid + 1;
             resp = urlread2(['http://' obj.IP '/rpc/call'], 'Post',...
                 jsonstruct, struct('name','Content-Type','value',...
@@ -162,9 +163,13 @@ classdef moku
             try
                 % Get the remote pymoku version
                 pymoku_version = char(mokuctl(obj, 'version', []));
-            catch
-                pymoku_version = NaN;
-                return
+            catch e
+                if(strcmp(e.identifier,'Moku:RPC32601'))
+                    pymoku_version = NaN;
+                    return
+                else
+                    error(e.message);
+                end
             end
 
             % Check for at least one match in the compatibility list
