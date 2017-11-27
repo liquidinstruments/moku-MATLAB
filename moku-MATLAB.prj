@@ -1,12 +1,12 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="55610463" file="/home/shanae/Documents/repo/moku-MATLAB/tools/moku-MATLAB.prj" location="/home/shanae/Documents/repo/moku-MATLAB/tools" name="moku-MATLAB" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="417534324" file="/home/shanae/Documents/repo/moku-MATLAB/moku-MATLAB.prj" location="/home/shanae/Documents/repo/moku-MATLAB" name="moku-MATLAB" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>moku-MATLAB</param.appname>
     <param.authnamewatermark>Liquid Instruments</param.authnamewatermark>
     <param.email>support@liquidinstruments.com</param.email>
     <param.company>Liquid Instruments</param.company>
     <param.summary>A MATLAB interface to the Moku:Lab all-in-one test and measurement device.</param.summary>
     <param.description />
-    <param.screenshot />
+    <param.screenshot>${PROJECT_ROOT}/tools/icon.png</param.screenshot>
     <param.version>2.2</param.version>
     <param.output>${PROJECT_ROOT}/moku-MATLAB.mltbx</param.output>
     <param.products.name />
@@ -46,7 +46,6 @@ data/empty</param.exclude.filters>
     <param.javaclasspath.excludes />
     <unset>
       <param.description />
-      <param.screenshot />
       <param.output />
       <param.products.name />
       <param.products.id />
@@ -63,27 +62,27 @@ data/empty</param.exclude.filters>
       <file>/home/shanae/Documents/repo/moku-MATLAB</file>
     </fileset.rootdir>
     <fileset.rootfiles>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/LICENSE</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuArbitraryWaveGen.m</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuBodeAnalyzer.m</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuDatalogger.m</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuIIRFilterBox.m</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuLockInAmp.m</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuOscilloscope.m</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuPIDController.m</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuPhasemeter.m</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuSpectrumAnalyzer.m</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/MokuWaveformGenerator.m</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/README.md</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/data</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/moku.m</file>
-      <file>/home/shanae/Documents/repo/moku-MATLAB/private</file>
+      <file>${PROJECT_ROOT}/LICENSE</file>
+      <file>${PROJECT_ROOT}/MokuArbitraryWaveGen.m</file>
+      <file>${PROJECT_ROOT}/MokuBodeAnalyzer.m</file>
+      <file>${PROJECT_ROOT}/MokuDatalogger.m</file>
+      <file>${PROJECT_ROOT}/MokuIIRFilterBox.m</file>
+      <file>${PROJECT_ROOT}/MokuLockInAmp.m</file>
+      <file>${PROJECT_ROOT}/MokuOscilloscope.m</file>
+      <file>${PROJECT_ROOT}/MokuPIDController.m</file>
+      <file>${PROJECT_ROOT}/MokuPhasemeter.m</file>
+      <file>${PROJECT_ROOT}/MokuSpectrumAnalyzer.m</file>
+      <file>${PROJECT_ROOT}/MokuWaveformGenerator.m</file>
+      <file>${PROJECT_ROOT}/README.md</file>
+      <file>${PROJECT_ROOT}/data</file>
+      <file>${PROJECT_ROOT}/moku.m</file>
+      <file>${PROJECT_ROOT}/private</file>
     </fileset.rootfiles>
     <fileset.depfun.included />
     <fileset.depfun.excluded />
     <fileset.package />
     <build-deliverables>
-      <file location="/home/shanae/Documents/repo/moku-MATLAB/tools" name="moku-MATLAB.mltbx" optional="false">/home/shanae/Documents/repo/moku-MATLAB/tools/moku-MATLAB.mltbx</file>
+      <file location="/home/shanae/Documents/repo/moku-MATLAB" name="moku-MATLAB.mltbx" optional="false">/home/shanae/Documents/repo/moku-MATLAB/moku-MATLAB.mltbx</file>
     </build-deliverables>
     <workflow />
     <matlab>
