@@ -24,7 +24,7 @@ m.reacquire('ch',1);
 % Stop an existing log, if any, then start a new one
 % 10sec single channel to CSV file on SD Card
 m.stop_data_log();
-m.start_data_log('duration', 10, 'use_sd', 'true', 'ch1', 'true', ...
+m.start_data_log('duration', 10, 'use_sd', 'false', 'ch1', 'true', ...
     'ch2', 'false', 'filetype', 'csv');
 
 %% Track log progress
