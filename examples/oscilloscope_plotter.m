@@ -23,10 +23,10 @@ m.set_timebase(-0.001,0.001);
 m.gen_sinewave(2, 0.5, 1e3, 'offset', 0);
 
 % Set the data source of Channel 1 to be Input 1
-m.set_source(1,'in');
+m.set_source(1,'in1');
 
 % Set the data source of Channel 2 to the generated output sinewave
-m.set_source(2,'out');
+m.set_source(2,'out2');
 
 %% Set up plots
 % Get initial data to set up plots

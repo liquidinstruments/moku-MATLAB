@@ -24,11 +24,11 @@ Wp = 0.1;   % Passband-edge frequency (% Nyquist sample rate)
 % Mould the coefficients into the Moku:Lab "matrix" format. 
 % Ensure "g" is a cell (not a single-element array). The remaining elements
 % are 1x6 numeric arrays. 
-filt_coeff = { {g},                 ... % Overall gain
+filt_coeff = {{ {g},                 ... % Overall gain
                 sos(1,[4,1:3,5,6]), ... % [s_1, b_01, b_11, b_21, a_11, a_21]
                 sos(2,[4,1:3,5,6]), ... % [s_2, b_02, b_12, b_22, a_12, a_22]
                 [1,1,0,0,0,0],      ... % Ignore this stage (all-pass)
-                [1,1,0,0,0,0]       }; % Ignore this stage (all-pass)
+                [1,1,0,0,0,0]       }}; % Ignore this stage (all-pass)
 
 %% Connect to your Moku
 ip = input('Please enter your Moku:Lab IP address: ', 's');
@@ -43,13 +43,13 @@ m.set_frontend(2, 'fiftyr', 'true', 'atten', 'false', 'ac', 'false');
 % Both filters have the same coefficients, but the different sampling rates
 % mean the resultant transfer functions will be different by a factor of
 % 128 (the ratio of sampling rates).
-m.set_filter(1, 'high', 'filter_coefficients', filt_coeff); % ~15.625 Smp/s
-m.set_filter(2, 'low', 'filter_coefficients', filt_coeff);  % ~122 Smp/s
+m.set_filter(1, 'high', filt_coeff); % ~15.625 Smp/s
+m.set_filter(2, 'low', filt_coeff);  % ~122 Smp/s
 
 % 0.1V Offset for Channel 1
 % Channel 2 acts on the sum of Input 1 and Input 2
-m.set_offset_gain(1, 'input_offset', 0.1);
-m.set_offset_gain(2, 'matrix_scalar_ch1', 0.5, 'matrix_scalar_ch2', 0.5);
+m.set_gains_offsets(1, 'output_offset', 0.1);
+m.set_control_matrix(2, 0.5, 0.5);
 
 % Set up monitoring of the input and output of the second filter channel.
 m.set_monitor('a','in1');

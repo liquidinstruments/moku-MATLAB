@@ -24,11 +24,11 @@ classdef moku
     % Further examples may be found <a href="matlab:
     % web('anaconda.org/liquidinstruments/matlab-examples/files')">here</a>.
     properties (Constant, Access=private)
-        compatibility = {'2.2','2.1'}; % List of compatible pymoku versions
+        compatibility = {'2.3'}; % List of compatible pymoku versions
     end
     
     properties (Constant)
-       version = '2.2.0'; 
+       version = '2.3.0';
     end
     
     properties (SetAccess=immutable)
