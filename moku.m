@@ -13,6 +13,7 @@ classdef moku
     %   MokuArbitraryWaveGen
     %   MokuBodeAnalyzer
     %   MokuDatalogger
+    %   MokuFIRFilter
     %   MokuIIRFilterBox
     %   MokuLockInAmp
     %   MokuOscilloscope

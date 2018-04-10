@@ -1,4 +1,4 @@
-#moku-MATLAB
+# moku-MATLAB
 
 MATLAB library for the command, control and monitoring of the [Liquid Instruments Moku:Lab](http://www.liquidinstruments.com) device.
 

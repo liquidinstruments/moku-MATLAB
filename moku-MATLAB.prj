@@ -1,19 +1,19 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="417534324" file="/home/shanae/Documents/repo/moku-MATLAB/moku-MATLAB.prj" location="/home/shanae/Documents/repo/moku-MATLAB" name="moku-MATLAB" target="target.toolbox" target-name="Package Toolbox">
+  <configuration file="C:\Users\shana\Documents\Liquid\repo\moku-MATLAB\moku-MATLAB.prj" location="C:\Users\shana\Documents\Liquid\repo\moku-MATLAB" name="moku-MATLAB" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>moku-MATLAB</param.appname>
     <param.authnamewatermark>Liquid Instruments</param.authnamewatermark>
     <param.email>support@liquidinstruments.com</param.email>
     <param.company>Liquid Instruments</param.company>
     <param.summary>A MATLAB interface to the Moku:Lab all-in-one test and measurement device.</param.summary>
     <param.description />
-    <param.screenshot>${PROJECT_ROOT}/tools/icon.png</param.screenshot>
-    <param.version>2.2</param.version>
-    <param.output>${PROJECT_ROOT}/moku-MATLAB.mltbx</param.output>
+    <param.screenshot>${PROJECT_ROOT}\tools\icon.png</param.screenshot>
+    <param.version>2.3.0</param.version>
+    <param.output>${PROJECT_ROOT}\moku-MATLAB.mltbx</param.output>
     <param.products.name />
     <param.products.id />
     <param.products.version />
     <param.platforms />
-    <param.guid>b585817a-b3ff-4490-b543-91386f4b6739</param.guid>
+    <param.guid>6acdc843-257d-43a2-bf2e-a106ad6d503b</param.guid>
     <param.exclude.filters>% List files contained in your toolbox folder that you would like to exclude
 % from packaging.  Excludes should be listed relative to the toolbox folder.
 % Some examples of how to specify excludes are provided below:
@@ -33,16 +33,19 @@
 % All files matching a pattern in all subfolders of the toolbox folder:
 % **/*.bak
 %
-.git
+.git/
 .gitignore
-examples
 tools
-data/empty</param.exclude.filters>
+examples</param.exclude.filters>
     <param.examples />
     <param.demosxml />
     <param.apps />
     <param.docs />
-    <param.matlabpath.excludes />
+    <param.matlabpath.excludes>
+      <item>/.git</item>
+      <item>/examples</item>
+      <item>/tools</item>
+    </param.matlabpath.excludes>
     <param.javaclasspath.excludes />
     <unset>
       <param.description />
@@ -55,38 +58,38 @@ data/empty</param.exclude.filters>
       <param.demosxml />
       <param.apps />
       <param.docs />
-      <param.matlabpath.excludes />
       <param.javaclasspath.excludes />
     </unset>
     <fileset.rootdir>
-      <file>/home/shanae/Documents/repo/moku-MATLAB</file>
+      <file>C:\Users\shana\Documents\Liquid\repo\moku-MATLAB</file>
     </fileset.rootdir>
     <fileset.rootfiles>
-      <file>${PROJECT_ROOT}/LICENSE</file>
-      <file>${PROJECT_ROOT}/MokuArbitraryWaveGen.m</file>
-      <file>${PROJECT_ROOT}/MokuBodeAnalyzer.m</file>
-      <file>${PROJECT_ROOT}/MokuDatalogger.m</file>
-      <file>${PROJECT_ROOT}/MokuIIRFilterBox.m</file>
-      <file>${PROJECT_ROOT}/MokuLockInAmp.m</file>
-      <file>${PROJECT_ROOT}/MokuOscilloscope.m</file>
-      <file>${PROJECT_ROOT}/MokuPIDController.m</file>
-      <file>${PROJECT_ROOT}/MokuPhasemeter.m</file>
-      <file>${PROJECT_ROOT}/MokuSpectrumAnalyzer.m</file>
-      <file>${PROJECT_ROOT}/MokuWaveformGenerator.m</file>
-      <file>${PROJECT_ROOT}/README.md</file>
-      <file>${PROJECT_ROOT}/data</file>
-      <file>${PROJECT_ROOT}/moku.m</file>
-      <file>${PROJECT_ROOT}/private</file>
+      <file>${PROJECT_ROOT}\data</file>
+      <file>${PROJECT_ROOT}\LICENSE</file>
+      <file>${PROJECT_ROOT}\moku.m</file>
+      <file>${PROJECT_ROOT}\MokuArbitraryWaveGen.m</file>
+      <file>${PROJECT_ROOT}\MokuBodeAnalyzer.m</file>
+      <file>${PROJECT_ROOT}\MokuDatalogger.m</file>
+      <file>${PROJECT_ROOT}\MokuFIRFilter.m</file>
+      <file>${PROJECT_ROOT}\MokuIIRFilterBox.m</file>
+      <file>${PROJECT_ROOT}\MokuLockInAmp.m</file>
+      <file>${PROJECT_ROOT}\MokuOscilloscope.m</file>
+      <file>${PROJECT_ROOT}\MokuPhasemeter.m</file>
+      <file>${PROJECT_ROOT}\MokuPIDController.m</file>
+      <file>${PROJECT_ROOT}\MokuSpectrumAnalyzer.m</file>
+      <file>${PROJECT_ROOT}\MokuWaveformGenerator.m</file>
+      <file>${PROJECT_ROOT}\private</file>
+      <file>${PROJECT_ROOT}\README.md</file>
     </fileset.rootfiles>
     <fileset.depfun.included />
     <fileset.depfun.excluded />
     <fileset.package />
     <build-deliverables>
-      <file location="/home/shanae/Documents/repo/moku-MATLAB" name="moku-MATLAB.mltbx" optional="false">/home/shanae/Documents/repo/moku-MATLAB/moku-MATLAB.mltbx</file>
+      <file location="C:\Users\shana\Documents\Liquid\repo\moku-MATLAB" name="moku-MATLAB.mltbx" optional="false">C:\Users\shana\Documents\Liquid\repo\moku-MATLAB\moku-MATLAB.mltbx</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>/usr/local/MATLAB/R2017a</root>
+      <root>C:\Program Files\MATLAB\R2017a</root>
       <toolboxes>
         <toolbox name="fixedpoint" />
         <toolbox name="matlabcoder" />
@@ -115,18 +118,18 @@ data/empty</param.exclude.filters>
       </toolbox>
     </matlab>
     <platform>
-      <unix>true</unix>
+      <unix>false</unix>
       <mac>false</mac>
-      <windows>false</windows>
+      <windows>true</windows>
       <win2k>false</win2k>
       <winxp>false</winxp>
       <vista>false</vista>
-      <linux>true</linux>
+      <linux>false</linux>
       <solaris>false</solaris>
-      <osver>4.4.0-97-generic</osver>
+      <osver>6.2</osver>
       <os32>false</os32>
       <os64>true</os64>
-      <arch>glnxa64</arch>
+      <arch>win64</arch>
       <matlab>true</matlab>
     </platform>
   </configuration>
