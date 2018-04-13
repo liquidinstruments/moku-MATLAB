@@ -4,6 +4,8 @@ MATLAB library for the command, control and monitoring of the [Liquid Instrument
 
 For moku-MATLAB documentation please run `help moku` from your MATLAB console.
 
+For information on how to discover your Moku:Lab's IP address see the [Connecting to your Moku:Lab](https://github.com/liquidinstruments/pymoku/wiki/Connecting-to-your-Moku:Lab) guide.
+
 ## Installation
 
 ### MATLAB 2015 or later
