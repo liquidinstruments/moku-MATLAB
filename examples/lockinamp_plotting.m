@@ -28,7 +28,7 @@ m.set_monitor('A','I');
 m.set_monitor('B','Q');
 
 % Trigger on Monitor 'B' ('Q' signal), rising edge, 0V
-m.set_trigger('B','rising', 0, 'hysteresis','false');
+m.set_trigger('B','rising', 0, 'hysteresis', 0.01);
 
 % View +-1usec, i.e. trigger in the centre
 m.set_timebase(-1e-6,1e-6);
