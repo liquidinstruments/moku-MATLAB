@@ -7,7 +7,7 @@
     <param.summary>A MATLAB interface to the Moku:Lab all-in-one test and measurement device.</param.summary>
     <param.description />
     <param.screenshot>${PROJECT_ROOT}\tools\icon.png</param.screenshot>
-    <param.version>2.3.0</param.version>
+    <param.version>2.4.0</param.version>
     <param.output>${PROJECT_ROOT}\moku-MATLAB.mltbx</param.output>
     <param.products.name />
     <param.products.id />
