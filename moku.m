@@ -25,11 +25,11 @@ classdef moku
     % Further examples may be found <a href="matlab:
     % web('anaconda.org/liquidinstruments/matlab-examples/files')">here</a>.
     properties (Constant, Access=private)
-        compatibility = {'2.3'}; % List of compatible pymoku versions
+        compatibility = {'2.5'}; % List of compatible pymoku versions
     end
     
     properties (Constant)
-       version = '2.3.0';
+       version = '2.5.0';
     end
     
     properties (SetAccess=immutable)
@@ -73,9 +73,10 @@ classdef moku
                 error(['Moku:Lab pymoku version too old for moku-MATLAB' ...
                     ' v' char(obj.version) '. Update Moku:Lab firmware.']);
             elseif ~compat
-                error(['Moku:Lab pymoku version (v' char(py_vers) ... 
-                   ') is incompatible with current moku-MATLAB version (v' ...
-                   char(obj.version) ').']);
+                error(['Moku:Lab pymoku version (v' char(py_vers) ')' ... 
+                   ' is incompatible with current moku-MATLAB version (v' ...
+                   char(obj.version) '). Visit www.liquidinstruments.com/matlab ' ...
+                   'to download the latest moku-MATLAB toolbox.']);
             end
             % Loads the instrument bitstreams
             obj.load_instrument_resources(Instrument);
