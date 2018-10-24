@@ -40,9 +40,9 @@ m.set_output_range(1, 1.0, -1.0);
 m.set_output_range(2, 1.0, -1.0);
 
 % set offsets
-% m.set_offsets('pid_input', 0.1)
-% m.set_offsets('out1', -0.1)
-% m.set_offsets('out2', 0.2)
+m.set_offsets('pid_input', 0.1)
+m.set_offsets('out1', -0.1)
+m.set_offsets('out2', 0.2)
 
 % configure second harmonic rejection low pass filter
 
